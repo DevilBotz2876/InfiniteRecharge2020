@@ -28,15 +28,11 @@ public class Robot extends TimedRobot {
 
   private RobotContainer robotContainer;
 
-  private final XboxController controller = new XboxController(0);
+    
 
-  JoystickButton button = new JoystickButton(controller, 1);  
+ 
 
-  private final DriveTrain drive = new DriveTrain();
-
-  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,7 +42,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    button.whenPressed(new DriveCommand(drive, null, null));
+    
     robotContainer = new RobotContainer();
   }
 
@@ -82,7 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    drive.updateOdometry();
+    
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -116,19 +112,19 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    final var xSpeed =
-        -speedLimiter.calculate(controller.getY(GenericHID.Hand.kLeft))
-            * DriveTrain.kMaxSpeed;
+    // final var xSpeed =
+    //     -speedLimiter.calculate(controller.getY(GenericHID.Hand.kLeft))
+    //         * DriveTrain.kMaxSpeed;
 
-    // Get the rate of angular rotation. We are inverting this because we want a
-    // positive value when we pull to the left (remember, CCW is positive in
-    // mathematics). Xbox controllers return positive values when you pull to
-    // the right by default.
-    final var rot =
-        -rotLimiter.calculate(controller.getX(GenericHID.Hand.kRight))
-            * DriveTrain.kMaxAngularSpeed;
+    // // Get the rate of angular rotation. We are inverting this because we want a
+    // // positive value when we pull to the left (remember, CCW is positive in
+    // // mathematics). Xbox controllers return positive values when you pull to
+    // // the right by default.
+    // final var rot =
+    //     -rotLimiter.calculate(controller.getX(GenericHID.Hand.kRight))
+    //         * DriveTrain.kMaxAngularSpeed;
 
-    drive.drive(xSpeed, rot);
+    // drive.drive(xSpeed, rot);
   }
 
   @Override

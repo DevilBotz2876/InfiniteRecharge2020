@@ -7,11 +7,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -34,20 +31,29 @@ public class DriveTrain extends SubsystemBase {
   private static final double kWheelRadius = 0.158; // meters
   private static final int kEncoderResolution = 4096;
 
-  private final SpeedController leftMaster = new PWMTalonSRX(2);
-  private final SpeedController leftFollower = new PWMTalonSRX(1);
-  private final SpeedController rightMaster = new PWMTalonSRX(4);
-  private final SpeedController rightFollower = new PWMTalonSRX(3);
+  private WPI_TalonSRX talonSRX4 = new WPI_TalonSRX(4);
+  private WPI_TalonSRX talonSRX3 = new WPI_TalonSRX(3);
+  private WPI_TalonSRX talonSRX2 = new WPI_TalonSRX(2);
+  private WPI_TalonSRX talonSRX1 = new WPI_TalonSRX(1);
 
-  private final Encoder leftEncoder = new Encoder(3, 4);
-  private final Encoder rightEncoder = new Encoder(1, 2);
+  private WPI_TalonSRX rightMaster = talonSRX2;
+  private WPI_TalonSRX leftMaster = talonSRX3;
+  private WPI_TalonSRX rightFollower = talonSRX1;
+  private WPI_TalonSRX leftFollower = talonSRX4;
 
-  private final SpeedControllerGroup leftGroup
-      = new SpeedControllerGroup(leftMaster, leftFollower);
-  private final SpeedControllerGroup rightGroup
-      = new SpeedControllerGroup(rightMaster, rightFollower);
+  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
+  rightFollower.follow(rightMaster);
+  leftFollower.follow(leftMaster);
 
-  private final AnalogGyro gyro = new AnalogGyro(0);
+  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
+  // rightMaster.setInverted(true);
+  // rightFollower.setInverted(InvertType.FollowMaster);
+  // leftMaster.setInverted(true);
+  // leftFollower.setInverted(InvertType.FollowMaster);
+
+  // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
+  leftMaster.setSensorPhase(false);
+  rightMaster.setSensorPhase(true);  
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
 
