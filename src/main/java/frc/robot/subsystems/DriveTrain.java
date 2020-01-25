@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -48,6 +49,7 @@ public class DriveTrain extends SubsystemBase {
 
   private final AnalogGyro gyro = new AnalogGyro(0);
 
+  DifferentialDrive differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
 
   //TODO what should these be? should they be different? find out next time on
   private final PIDController leftPIDController = new PIDController(1, 0, 0);
@@ -76,7 +78,10 @@ public class DriveTrain extends SubsystemBase {
 
     odometry = new DifferentialDriveOdometry(getAngle());
   }
-
+  
+  public void tankDrive(double leftValue, double rightValue) {
+    differentialDrive.tankDrive(leftValue, rightValue);
+  }
   
   /**
    * Returns the angle of the robot as a Rotation2d.

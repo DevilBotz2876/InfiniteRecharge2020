@@ -7,25 +7,31 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.DriveTrain;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * An example command that uses an example subsystem.
  */
 public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveTrain m_subsystem;
+  private final DriveTrain m_drive;
+  private final DoubleSupplier m_forward;
+  private final DoubleSupplier m_rotation;
 
   /**
    * Creates a new DriveCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DriveTrain subsystem) {
-    m_subsystem = subsystem;
+  public DriveCommand(DriveTrain drive, DoubleSupplier forward, DoubleSupplier rotation) {
+    m_drive = drive;
+    m_forward = forward;
+    m_rotation = rotation;
+    addRequirements(drive);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -36,6 +42,7 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_drive.tankDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

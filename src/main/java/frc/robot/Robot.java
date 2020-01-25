@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveTrain;
 
 /**
@@ -27,6 +29,9 @@ public class Robot extends TimedRobot {
   private RobotContainer robotContainer;
 
   private final XboxController controller = new XboxController(0);
+
+  JoystickButton button = new JoystickButton(controller, 1);  
+
   private final DriveTrain drive = new DriveTrain();
 
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
@@ -41,6 +46,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    button.whenPressed(new DriveCommand(drive, null, null));
     robotContainer = new RobotContainer();
   }
 
