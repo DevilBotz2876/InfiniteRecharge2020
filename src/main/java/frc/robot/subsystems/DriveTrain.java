@@ -8,7 +8,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -41,19 +43,7 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonSRX rightFollower = talonSRX1;
   private WPI_TalonSRX leftFollower = talonSRX4;
 
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
-  rightFollower.follow(rightMaster);
-  leftFollower.follow(leftMaster);
-
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
-  // rightMaster.setInverted(true);
-  // rightFollower.setInverted(InvertType.FollowMaster);
-  // leftMaster.setInverted(true);
-  // leftFollower.setInverted(InvertType.FollowMaster);
-
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
-  leftMaster.setSensorPhase(false);
-  rightMaster.setSensorPhase(true);  
+  private AHRS navx = new AHRS(SPI.Port.kMXP);
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -71,6 +61,20 @@ public class DriveTrain extends SubsystemBase {
    * Sets the encoder distance per pulse and resets the gyro.
    */
   public DriveTrain() {
+  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
+  rightFollower.follow(rightMaster);
+  leftFollower.follow(leftMaster);
+
+  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
+  // rightMaster.setInverted(true);
+  // rightFollower.setInverted(InvertType.FollowMaster);
+  // leftMaster.setInverted(true);
+  // leftFollower.setInverted(InvertType.FollowMaster);
+
+  // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
+  leftMaster.setSensorPhase(false);
+  rightMaster.setSensorPhase(true); 
+    
     gyro.reset();
 
     // Set the distance per pulse for the drive encoders. We can simply use the
