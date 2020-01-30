@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -16,7 +18,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -54,12 +55,6 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveKinematics kinematics
       = new DifferentialDriveKinematics(kTrackWidth);
 
-  private final DifferentialDriveOdometry odometry;
-
-  /**
-   * Constructs a differential drive object.
-   * Sets the encoder distance per pulse and resets the gyro.
-   */
   public DriveTrain() {
   // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
   rightFollower.follow(rightMaster);
@@ -74,19 +69,24 @@ public class DriveTrain extends SubsystemBase {
   // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
   leftMaster.setSensorPhase(false);
   rightMaster.setSensorPhase(true); 
-    
-    gyro.reset();
+  
+  
+  TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
 
-    // Set the distance per pulse for the drive encoders. We can simply use the
-    // distance traveled for one rotation of the wheel divided by the encoder
-    // resolution.
-    leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
-    rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
+  allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
 
-    leftEncoder.reset();
-    rightEncoder.reset();
+  leftMaster.configAllSettings(allConfigs);
+  rightMaster.configAllSettings(allConfigs);
 
-    odometry = new DifferentialDriveOdometry(getAngle());
+  navx.reset();
+  resetEncoders();
+
+    // odometry = new DifferentialDriveOdometry(getAngle());
+  }
+
+  public void resetEncoders() {
+    leftMaster.setSelectedSensorPosition(0, 0, 0);
+    rightMaster.setSelectedSensorPosition(0, 0, 0);
   }
   
   public void tankDrive(double leftValue, double rightValue) {
@@ -100,7 +100,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public Rotation2d getAngle() {
     // Negating the angle because WPILib gyros are CW positive.
-    return Rotation2d.fromDegrees(-gyro.getAngle());
+    return Rotation2d.fromDegrees(-navx.getAngle());
   }
 
   /**
@@ -109,12 +109,7 @@ public class DriveTrain extends SubsystemBase {
    * @param speeds The desired wheel speeds.
    */
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-    double leftOutput = leftPIDController.calculate(leftEncoder.getRate(),
-        speeds.leftMetersPerSecond);
-    double rightOutput = rightPIDController.calculate(rightEncoder.getRate(),
-        speeds.rightMetersPerSecond);
-    leftGroup.set(leftOutput);
-    rightGroup.set(rightOutput);
+
   }
 
   /**
@@ -129,12 +124,6 @@ public class DriveTrain extends SubsystemBase {
     setSpeeds(wheelSpeeds);
   }
 
-  /**
-   * Updates the field-relative position.
-   */
-  public void updateOdometry() {
-    odometry.update(getAngle(), leftEncoder.getDistance(), rightEncoder.getDistance());
-  }
   @Override
   public void periodic() {
 
