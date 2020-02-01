@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.subsystem.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -20,9 +20,13 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystem.RobotSubsystem;
 
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain extends RobotSubsystem {
   /**
    * Creates a new DriveTrain.
    */
@@ -57,36 +61,40 @@ public class DriveTrain extends SubsystemBase {
       = new DifferentialDriveKinematics(kTrackWidth);
 
   public DriveTrain() {
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
-  rightFollower.follow(rightMaster);
-  leftFollower.follow(leftMaster);
+    super("DriveTrain");
+    addCommand(new ExampleCommand(this));
+    addValue("Gyro", navx::getAngle);
 
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
-  rightMaster.setInverted(false);
-  rightFollower.setInverted(InvertType.FollowMaster);
-  leftMaster.setInverted(false);
-  leftFollower.setInverted(InvertType.FollowMaster);
+    // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
+    rightFollower.follow(rightMaster);
+    leftFollower.follow(leftMaster);
 
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
+    // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
+    rightMaster.setInverted(false);
+    rightFollower.setInverted(InvertType.FollowMaster);
+    leftMaster.setInverted(false);
+    leftFollower.setInverted(InvertType.FollowMaster);
 
-  // 2876 settings
-  leftMaster.setSensorPhase(true);
-  rightMaster.setSensorPhase(true); 
+    // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
 
-  // 1234 settings
-  // leftMaster.setSensorPhase(false);
-  // rightMaster.setSensorPhase(true); 
-  
-  
-  TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
+    // 2876 settings
+    leftMaster.setSensorPhase(true);
+    rightMaster.setSensorPhase(true);
 
-  allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
+    // 1234 settings
+    // leftMaster.setSensorPhase(false);
+    // rightMaster.setSensorPhase(true);
 
-  leftMaster.configAllSettings(allConfigs);
-  rightMaster.configAllSettings(allConfigs);
 
-  navx.reset();
-  resetEncoders();
+    TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
+
+    allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
+
+    leftMaster.configAllSettings(allConfigs);
+    rightMaster.configAllSettings(allConfigs);
+
+    navx.reset();
+    resetEncoders();
 
     // odometry = new DifferentialDriveOdometry(getAngle());
   }
@@ -137,6 +145,6 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-
   }
+
 }

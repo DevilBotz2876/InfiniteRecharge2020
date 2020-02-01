@@ -5,16 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.subsystem.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystem.RobotSubsystem;
 
-public class ExampleSubsystem extends SubsystemBase {
+public class ExampleSubsystem extends RobotSubsystem {
   /**
    * Creates a new ExampleSubsystem.
    */
   public ExampleSubsystem() {
-
+  super("ExampleSubsystem");
+    addCommand(new ExampleCommand(this));
+    addValue("ExampleValue", Math::random);
   }
 
   @Override

@@ -11,12 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.subsystem.subsystems.DriveTrain;
+import frc.robot.subsystem.subsystems.ExampleSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -51,11 +49,11 @@ public class RobotContainer {
     configureButtonBindings();
 
     drive.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(() -> drive
-            .arcadeDrive(-controller.getY(GenericHID.Hand.kLeft),
-                       -controller.getX(GenericHID.Hand.kRight)), drive));
+            // A split-stick arcade command, with forward/backward controlled by the left
+            // hand, and turning controlled by the right.
+            new RunCommand(() -> drive
+                    .arcadeDrive(-controller.getY(GenericHID.Hand.kLeft),
+                            -controller.getX(GenericHID.Hand.kRight)), drive));
 
   }
 

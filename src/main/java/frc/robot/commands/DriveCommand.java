@@ -10,7 +10,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystem.subsystems.DriveTrain;
 
 /**
  * An example command that uses an example subsystem.
@@ -24,7 +24,7 @@ public class DriveCommand extends CommandBase {
   /**
    * Creates a new DriveCommand.
    *
-   * @param subsystem The subsystem used by this command.
+   * @param drive The subsystem used by this command.
    */
   public DriveCommand(DriveTrain drive, DoubleSupplier forward, DoubleSupplier rotation) {
     m_drive = drive;
@@ -55,4 +55,6 @@ public class DriveCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+
 }
