@@ -99,6 +99,10 @@ public class DriveTrain extends SubsystemBase {
   public void tankDrive(double leftValue, double rightValue) {
     differentialDrive.tankDrive(leftValue, rightValue);
   }
+
+  public void arcadeDrive(double leftValue, double rightValue) {
+    differentialDrive.arcadeDrive(leftValue, rightValue);
+  }
   
   /**
    * Returns the angle of the robot as a Rotation2d.
