@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -40,9 +41,9 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonSRX talonSRX1 = new WPI_TalonSRX(1);
 
   private WPI_TalonSRX rightMaster = talonSRX2;
-  private WPI_TalonSRX leftMaster = talonSRX3;
+  private WPI_TalonSRX leftMaster = talonSRX4;
   private WPI_TalonSRX rightFollower = talonSRX1;
-  private WPI_TalonSRX leftFollower = talonSRX4;
+  private WPI_TalonSRX leftFollower = talonSRX3;
 
   private AHRS navx = new AHRS(SPI.Port.kMXP);
 
@@ -61,19 +62,25 @@ public class DriveTrain extends SubsystemBase {
   leftFollower.follow(leftMaster);
 
   // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
-  // rightMaster.setInverted(true);
-  // rightFollower.setInverted(InvertType.FollowMaster);
-  // leftMaster.setInverted(true);
-  // leftFollower.setInverted(InvertType.FollowMaster);
+  rightMaster.setInverted(false);
+  rightFollower.setInverted(InvertType.FollowMaster);
+  leftMaster.setInverted(false);
+  leftFollower.setInverted(InvertType.FollowMaster);
 
   // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
-  leftMaster.setSensorPhase(false);
+
+  // 2876 settings
+  leftMaster.setSensorPhase(true);
   rightMaster.setSensorPhase(true); 
+
+  // 1234 settings
+  // leftMaster.setSensorPhase(false);
+  // rightMaster.setSensorPhase(true); 
   
   
   TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
 
-  allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+  allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
 
   leftMaster.configAllSettings(allConfigs);
   rightMaster.configAllSettings(allConfigs);
