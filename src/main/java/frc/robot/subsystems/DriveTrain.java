@@ -62,9 +62,10 @@ public class DriveTrain extends SubsystemBase {
   leftFollower.follow(leftMaster);
 
   // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
-  rightMaster.setInverted(false);
+  // 1234 settings
+  rightMaster.setInverted(true);
   rightFollower.setInverted(InvertType.FollowMaster);
-  leftMaster.setInverted(false);
+  leftMaster.setInverted(true);
   leftFollower.setInverted(InvertType.FollowMaster);
 
   // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase

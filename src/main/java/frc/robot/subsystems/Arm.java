@@ -12,45 +12,33 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
+public class Arm extends SubsystemBase {
   /**
-   * Creates a new Intake subsystem.
+   * Creates a new Arm.
    */
-  //TODO
-  private WPI_TalonSRX intakeTalon;
-  
+  private WPI_TalonSRX armTalon;
 
-  public Intake() {
-    intakeTalon = new WPI_TalonSRX(5);
-    
-
+  public Arm() {
+    armTalon = new WPI_TalonSRX(6);
 
     TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
-
-    // allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
-
-    intakeTalon.configAllSettings(allConfigs);
-    
-
-    
+    armTalon.configAllSettings(allConfigs);
   }
 
-  public void ballIn(){
-    intakeTalon.set(-0.5);
+  public void armUp(){
+    armTalon.set(0.4);
   }
 
-  public void ballOut(){
-    intakeTalon.set(0.5);
+  public void armDown(){
+    armTalon.set(-0.25);
   }
 
-  public void stop(){
-    intakeTalon.set(0);
+  public void armStop(){
+    armTalon.set(0.15);
   }
-
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
   }
 }

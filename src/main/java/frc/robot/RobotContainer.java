@@ -9,9 +9,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ArmDown;
+import frc.robot.commands.ArmStop;
+import frc.robot.commands.ArmUp;
+import frc.robot.commands.BallIn;
+import frc.robot.commands.BallOut;
+import frc.robot.commands.BallStop;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
@@ -27,6 +36,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain drive = new DriveTrain();
   private final Intake intake = new Intake();
+  private final Arm arm = new Arm();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -54,6 +64,9 @@ public class RobotContainer {
         new RunCommand(() -> drive
             .arcadeDrive(-controller.getY(GenericHID.Hand.kLeft),
                        -controller.getX(GenericHID.Hand.kRight)), drive));
+    
+    intake.setDefaultCommand(new BallStop(intake));
+    arm.setDefaultCommand(new ArmStop(arm));
 
   }
 
@@ -64,7 +77,21 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(controller, kA).whenPressed(command);
+    new JoystickButton(controller, Button.kBumperRight.value)
+        .whenPressed(new BallIn(intake))
+        .whenReleased(new BallStop(intake));
+
+    new JoystickButton(controller, Button.kBumperLeft.value)
+        .whenPressed(new BallOut(intake))
+        .whenReleased(new BallStop(intake));
+
+    new JoystickButton(controller, Button.kY.value)
+        .whenPressed(new ArmUp(arm))
+        .whenReleased(new ArmStop(arm));
+
+    new JoystickButton(controller, Button.kA.value)
+        .whenPressed(new ArmDown(arm))
+        .whenReleased(new ArmStop(arm));
   }
 
 
