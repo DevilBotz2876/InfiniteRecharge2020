@@ -24,6 +24,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.WheelOfFortune;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -37,6 +38,7 @@ public class RobotContainer {
   private final DriveTrain drive = new DriveTrain();
   private final Intake intake = new Intake();
   private final Arm arm = new Arm();
+  private final WheelOfFortune wof = new WheelOfFortune();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 

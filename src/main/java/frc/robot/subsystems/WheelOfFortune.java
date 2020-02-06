@@ -7,36 +7,40 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Arm extends SubsystemBase {
+public class WheelOfFortune extends SubsystemBase {
   /**
-   * Creates a new Arm.
+   * Creates a new WheelOfFortune.
    */
-//TODO add encoder/limit switch
+  private WPI_TalonSRX liftTalon;
+  private WPI_TalonSRX spinTalon;
 
-  private WPI_TalonSRX armTalon;
-
-  public Arm() {
-    armTalon = new WPI_TalonSRX(6);
-
-    TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
-    armTalon.configAllSettings(allConfigs);
+  public WheelOfFortune() {
+    liftTalon = new WPI_TalonSRX(7);
+    spinTalon = new WPI_TalonSRX(8);
   }
 
-  public void armUp(){
-    armTalon.set(0.4);
+  public void wofUp(){
+    liftTalon.set(0.5);
   }
 
-  public void armDown(){
-    armTalon.set(-0.25);
+  public void wofDown(){
+    liftTalon.set(-0.5);
   }
 
-  public void armStop(){
-    armTalon.set(0.15);
+  public void wofStop(){
+    liftTalon.set(0);
+  }
+
+  public void wofSpin(){
+    spinTalon.set(0.5);
+  }
+
+  public void wofSpinStop(){
+    spinTalon.set(0);
   }
 
   @Override
