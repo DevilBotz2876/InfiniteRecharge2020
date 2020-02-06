@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmDown;
@@ -21,6 +23,7 @@ import frc.robot.commands.BallOut;
 import frc.robot.commands.BallStop;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Arm;
+import frc.robot.commands.IntakeDefault;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
@@ -67,6 +70,11 @@ public class RobotContainer {
     
     intake.setDefaultCommand(new BallStop(intake));
     arm.setDefaultCommand(new ArmStop(arm));
+       
+    // All 3 of these should do the same/similar thing
+    // intake.setDefaultCommand(new IntakeDefault(intake));
+    // intake.setDefaultCommand(new RunCommand(()->intake.stop(), intake));
+    // intake.setDefaultCommand(new PerpetualCommand(new InstantCommand(()->intake.stop(), intake)));
 
   }
 
@@ -92,6 +100,14 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kA.value)
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
+    // new JoystickButton(controller, kA).whenPressed(command);
+
+    // new JoystickButton(controller, Button.kB.value)
+    // .whenPressed(new InstantCommand(intake::ballIn, intake));
+    // new JoystickButton(controller, Button.kA.value)
+    // .whileHeld(new InstantCommand(intake::ballOut, intake));
+
+    
   }
 
 
