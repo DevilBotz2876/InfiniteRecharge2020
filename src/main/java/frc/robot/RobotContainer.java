@@ -9,7 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -70,6 +72,9 @@ public class RobotContainer {
     intake.setDefaultCommand(new BallStop(intake));
     arm.setDefaultCommand(new ArmStop(arm));
 
+    SmartDashboard.putData(intake);
+    SmartDashboard.putData(arm);
+    SmartDashboard.putData(drive);
   }
 
   /**
@@ -79,6 +84,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // new JoystickButton(controller, () -> stick.getRawAxis(2) > 0.75);
+    // new Button(() -> stick.getRawAxis(3) > 0.75);
+
     new JoystickButton(controller, Button.kBumperRight.value)
         .whenPressed(new BallIn(intake))
         .whenReleased(new BallStop(intake));
@@ -87,11 +95,13 @@ public class RobotContainer {
         .whenPressed(new BallOut(intake))
         .whenReleased(new BallStop(intake));
 
-    new JoystickButton(controller, Button.kY.value)
+
+        //does not work, uses buttons b and x instead
+    new JoystickButton(controller, Axis.kRightTrigger.value)
         .whenPressed(new ArmUp(arm))
         .whenReleased(new ArmStop(arm));
 
-    new JoystickButton(controller, Button.kA.value)
+    new JoystickButton(controller, Axis.kLeftTrigger.value)
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
   }
