@@ -8,8 +8,15 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.WOFConstants;
 
 public class WheelOfFortune extends SubsystemBase {
   /**
@@ -17,10 +24,21 @@ public class WheelOfFortune extends SubsystemBase {
    */
   private WPI_TalonSRX liftTalon;
   private WPI_TalonSRX spinTalon;
+  /**
+   * Change the I2C port below to match the connection of your color sensor
+   */
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorMatch m_colorMatcher = new ColorMatch();
+  private String lastColor = "NONE";
 
   public WheelOfFortune() {
     liftTalon = new WPI_TalonSRX(7);
     spinTalon = new WPI_TalonSRX(8);
+    m_colorMatcher.addColorMatch(WOFConstants.BLUE_TARGET);
+    m_colorMatcher.addColorMatch(WOFConstants.GREEN_TARGET);
+    m_colorMatcher.addColorMatch(WOFConstants.RED_TARGET);
+    m_colorMatcher.addColorMatch(WOFConstants.YELLOW_TARGET);
   }
 
   public void wofUp(){
@@ -46,5 +64,16 @@ public class WheelOfFortune extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    Color detectedColor = m_colorSensor.getColor();
+    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+    String colorString = WOFConstants.COLOR_MAP.get(match.color);
+    if (!lastColor.equals(colorString)) {
+      SmartDashboard.putString("Last Color Change", String.format("Detected color change from %s to %s.", lastColor, colorString));
+      //fire change color condition
+    }
+    lastColor = colorString;
+
+    SmartDashboard.putNumber("Confidence", match.confidence);
+    SmartDashboard.putString("Detected Color", colorString);
   }
 }
