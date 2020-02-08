@@ -41,15 +41,6 @@ public class RobotContainer {
 
   private final XboxController controller = new XboxController(0);
 
-
-  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  // private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
-  // private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
-
-  // JoystickButton button = new JoystickButton(controller, 1);
-
-
-
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -57,12 +48,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    drive.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(() -> drive
-            .arcadeDrive(-controller.getY(GenericHID.Hand.kLeft),
-                       -controller.getX(GenericHID.Hand.kRight)), drive));
+    drive.setDefaultCommand(new DriveCommand(drive, 
+      () -> -controller.getY(GenericHID.Hand.kLeft),
+      () -> -controller.getX(GenericHID.Hand.kRight)
+      ));
     
     intake.setDefaultCommand(new BallStop(intake));
     arm.setDefaultCommand(new ArmStop(arm));
@@ -79,8 +68,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(controller, () -> stick.getRawAxis(2) > 0.75);
-    // new Button(() -> stick.getRawAxis(3) > 0.75);
 
     new JoystickButton(controller, Button.kBumperRight.value)
         .whenPressed(new BallIn(intake))
@@ -110,7 +97,7 @@ public class RobotContainer {
         .whenPressed(new WOFDown(wof))
         .whenReleased(new WOFStop(wof));
 
-    new JoystickButton(controller, Button.kStickRight.value)
+    new JoystickButton(controller, Button.kX.value)
         .whenPressed(new WOFSpin(wof))
         .whenReleased(new WOFSpinStop(wof));
   }

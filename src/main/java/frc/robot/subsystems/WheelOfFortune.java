@@ -39,14 +39,20 @@ public class WheelOfFortune extends SubsystemBase {
     m_colorMatcher.addColorMatch(WOFConstants.GREEN_TARGET);
     m_colorMatcher.addColorMatch(WOFConstants.RED_TARGET);
     m_colorMatcher.addColorMatch(WOFConstants.YELLOW_TARGET);
+
+    // // Create Boolean widget that displays the color
+    // colorWidget = Constants.WOFConstants.COLOR_MAP.add("Color", false);
+    // colorWidget.withPosition(0, 4);
+    // colorWidget.withProperties(COLOR_MAP.of("colorWhenFalse", "black"));
+    // colorWidgetEntry = colorWidget.getEntry();
   }
 
   public void wofUp(){
-    liftTalon.set(0.5);
+    liftTalon.set(0.3);
   }
 
   public void wofDown(){
-    liftTalon.set(-0.5);
+    liftTalon.set(-0.3);
   }
 
   public void wofStop(){
@@ -75,5 +81,13 @@ public class WheelOfFortune extends SubsystemBase {
 
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
+
+    // Color color = robotContainer.readColor();
+    
+    // if (!colorSet) {
+    //   // Choose "true" color based on color of wheel required for Position Control
+    //   colorWidget.withProperties(Map.of("colorWhenTrue", color.value));
+    //   colorWidgetEntry.setBoolean(true);
+    //   colorSet = true;
   }
 }

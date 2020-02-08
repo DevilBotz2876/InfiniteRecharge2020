@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -20,6 +21,8 @@ public class DriveCommand extends CommandBase {
   private final DriveTrain m_drive;
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_rotation;
+  private final SlewRateLimiter filterForward;
+  private final SlewRateLimiter filterRotation;
 
   /**
    * Creates a new DriveCommand.
@@ -31,7 +34,10 @@ public class DriveCommand extends CommandBase {
     m_forward = forward;
     m_rotation = rotation;
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
+
+    // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per second
+    filterForward = new SlewRateLimiter(3);
+    filterRotation = new SlewRateLimiter(3);
   }
 
   // Called when the command is initially scheduled.
@@ -42,7 +48,17 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.tankDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
+    // double f = m_forward.getAsDouble();
+    // double r = m_rotation.getAsDouble();
+    double f = filterForward.calculate(m_forward.getAsDouble());
+    double r = filterRotation.calculate(m_rotation.getAsDouble());
+    
+    // y=a(x^3)+(1-a)x
+    double a = .4;
+    f = (a * (f*f*f)) + ((1-a) * f); 
+    r = (a * (r*r*r)) + ((1-a) * r); 
+
+    m_drive.arcadeDrive(f, r);
   }
 
   // Called once the command ends or is interrupted.
