@@ -34,10 +34,10 @@ public final class Constants {
     public static final Color RED_TARGET = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public static final Color YELLOW_TARGET = ColorMatch.makeColor(0.361, 0.524, 0.113);
     public static final Map<Color, String> COLOR_MAP = Map.of(
-            BLUE_TARGET, "BLUE",
-            GREEN_TARGET, "GREEN",
-            RED_TARGET, "RED",
-            YELLOW_TARGET, "YELLOW"
+            BLUE_TARGET, "Blue",
+            GREEN_TARGET, "Green",
+            RED_TARGET, "Red",
+            YELLOW_TARGET, "Yellow"
     );
 
 }

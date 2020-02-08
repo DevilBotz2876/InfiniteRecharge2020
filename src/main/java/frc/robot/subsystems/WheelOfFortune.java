@@ -30,6 +30,7 @@ public class WheelOfFortune extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
+  private String lastColor = "NO LAST COLOR";
 
   public WheelOfFortune() {
     liftTalon = new WPI_TalonSRX(7);
@@ -66,6 +67,12 @@ public class WheelOfFortune extends SubsystemBase {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
     String colorString = Constants.COLOR_MAP.get(match.color);
+    if (!lastColor.equals(colorString)) {
+      SmartDashboard.putString("Last Color Change", String.format("Detected color change from %s to %s.", lastColor, colorString));
+      //fire change color condition
+    }
+    lastColor = colorString;
+
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
   }
