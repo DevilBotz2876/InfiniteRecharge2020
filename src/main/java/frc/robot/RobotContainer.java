@@ -22,6 +22,11 @@ import frc.robot.commands.BallIn;
 import frc.robot.commands.BallOut;
 import frc.robot.commands.BallStop;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.WOFDown;
+import frc.robot.commands.WOFSpin;
+import frc.robot.commands.WOFSpinStop;
+import frc.robot.commands.WOFStop;
+import frc.robot.commands.WOFUp;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -104,6 +109,18 @@ public class RobotContainer {
     new JoystickButton(controller, Axis.kLeftTrigger.value)
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
+
+    new JoystickButton(controller, Button.kY.value)
+        .whenPressed(new WOFUp(wof))
+        .whenReleased(new WOFStop(wof));
+
+    new JoystickButton(controller, Button.kA.value)
+        .whenPressed(new WOFDown(wof))
+        .whenReleased(new WOFStop(wof));
+
+    new JoystickButton(controller, Button.kStickRight.value)
+        .whenPressed(new WOFSpin(wof))
+        .whenReleased(new WOFSpinStop(wof));
   }
 
 
