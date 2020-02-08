@@ -13,10 +13,14 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WOFConstants;
+
+import java.util.Map;
 
 public class WheelOfFortune extends SubsystemBase {
   /**
@@ -31,28 +35,23 @@ public class WheelOfFortune extends SubsystemBase {
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
   private String lastColor = "NONE";
+  private SuppliedValueWidget<Boolean> colorWidget =
+          Shuffleboard.getTab("WOF").addBoolean("Color", () -> true);
 
   public WheelOfFortune() {
     liftTalon = new WPI_TalonSRX(7);
     spinTalon = new WPI_TalonSRX(8);
-    m_colorMatcher.addColorMatch(WOFConstants.BLUE_TARGET);
-    m_colorMatcher.addColorMatch(WOFConstants.GREEN_TARGET);
-    m_colorMatcher.addColorMatch(WOFConstants.RED_TARGET);
-    m_colorMatcher.addColorMatch(WOFConstants.YELLOW_TARGET);
-
-    // // Create Boolean widget that displays the color
-    // colorWidget = Constants.WOFConstants.COLOR_MAP.add("Color", false);
-    // colorWidget.withPosition(0, 4);
-    // colorWidget.withProperties(COLOR_MAP.of("colorWhenFalse", "black"));
-    // colorWidgetEntry = colorWidget.getEntry();
+    for (Color color : WOFConstants.COLOR_MAP.keySet()) {
+      m_colorMatcher.addColorMatch(color);
+    }
   }
 
   public void wofUp(){
-    liftTalon.set(0.3);
+    liftTalon.set(0.5);
   }
 
   public void wofDown(){
-    liftTalon.set(-0.3);
+    liftTalon.set(-0.5);
   }
 
   public void wofStop(){
@@ -78,16 +77,8 @@ public class WheelOfFortune extends SubsystemBase {
       //fire change color condition
     }
     lastColor = colorString;
-
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
-
-    // Color color = robotContainer.readColor();
-    
-    // if (!colorSet) {
-    //   // Choose "true" color based on color of wheel required for Position Control
-    //   colorWidget.withProperties(Map.of("colorWhenTrue", color.value));
-    //   colorWidgetEntry.setBoolean(true);
-    //   colorSet = true;
+    colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
   }
 }
