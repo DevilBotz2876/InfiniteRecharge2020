@@ -15,23 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ArmDown;
-import frc.robot.commands.ArmStop;
-import frc.robot.commands.ArmUp;
-import frc.robot.commands.BallIn;
-import frc.robot.commands.BallOut;
-import frc.robot.commands.BallStop;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.WOFDown;
-import frc.robot.commands.WOFSpin;
-import frc.robot.commands.WOFSpinStop;
-import frc.robot.commands.WOFStop;
-import frc.robot.commands.WOFUp;
+import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.WheelOfFortune;
+import frc.robot.util.XboxTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -101,14 +91,16 @@ public class RobotContainer {
         .whenReleased(new BallStop(intake));
 
 
+
         //does not work, uses buttons b and x instead
-    new JoystickButton(controller, Axis.kRightTrigger.value)
+    new XboxTrigger(controller, Axis.kRightTrigger.value)
         .whenPressed(new ArmUp(arm))
         .whenReleased(new ArmStop(arm));
 
-    new JoystickButton(controller, Axis.kLeftTrigger.value)
+    new XboxTrigger(controller, Axis.kLeftTrigger.value)
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
+
 
     new JoystickButton(controller, Button.kY.value)
         .whenPressed(new WOFUp(wof))
