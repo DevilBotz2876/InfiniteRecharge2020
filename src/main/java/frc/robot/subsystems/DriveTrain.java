@@ -32,7 +32,12 @@ public class DriveTrain extends SubsystemBase {
   public static final double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second 
 
   private static final double kTrackWidth = 0.595; // meters
-  private static final double kWheelRadius = 0.158; // meters
+
+  // 7in circumference wheel which is .1778m
+  // .1778/3.14 = .0566 diameter
+  // radius is .0556/2 = .0283 
+  // 0.158 was original value we had for radius
+  private static final double kWheelRadius = 0.0283; // meters
   private static final int kEncoderResolution = 4096;
 
   private WPI_TalonSRX talonSRX4 = new WPI_TalonSRX(4);
@@ -71,12 +76,12 @@ public class DriveTrain extends SubsystemBase {
   // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
 
   // 2876 settings
-  leftMaster.setSensorPhase(true);
-  rightMaster.setSensorPhase(true); 
+  // leftMaster.setSensorPhase(true);
+  // rightMaster.setSensorPhase(true); 
 
   // 1234 settings
-  // leftMaster.setSensorPhase(false);
-  // rightMaster.setSensorPhase(true); 
+  leftMaster.setSensorPhase(false);
+  rightMaster.setSensorPhase(true); 
   
   
   TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
