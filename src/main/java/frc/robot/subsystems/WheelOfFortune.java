@@ -60,7 +60,7 @@ public class WheelOfFortune extends SubsystemBase {
   }
 
   public void wofSpin(){
-    spinTalon.set(0.5);
+    spinTalon.set(1);
   }
 
   public void wofSpinStop(){
