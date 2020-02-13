@@ -70,6 +70,8 @@ public class RobotContainer {
     SmartDashboard.putData(intake);
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);
+
+    SmartDashboard.putData(new WOFSpinNextColor(wof));
   }
 
   /**
