@@ -96,7 +96,6 @@ public class WheelOfFortune extends SubsystemBase {
   private void onNextColor(String colorString) {
     SmartDashboard.putString("Last Color Change", String.format("Detected color change from %s to %s.", lastColor, colorString));
     if (spinState) {
-      wofSpinStop();
       spinState = false;
     }
   }
