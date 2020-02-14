@@ -26,10 +26,10 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
 
     public static final class WOFConstants {
-        public static final Color BLUE_TARGET = ColorMatch.makeColor(0, 0.5, 0.5);
-        public static final Color GREEN_TARGET = ColorMatch.makeColor(0, 1, 0);
-        public static final Color RED_TARGET = ColorMatch.makeColor(1, 0, 0);
-        public static final Color YELLOW_TARGET = ColorMatch.makeColor(0.5, 0.5, 0);
+        public static final Color BLUE_TARGET = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        public static final Color GREEN_TARGET = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        public static final Color RED_TARGET = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        public static final Color YELLOW_TARGET = ColorMatch.makeColor(0.361, 0.524, 0.113);
         public static final Map<Color, String> COLOR_MAP = Map.of(BLUE_TARGET, "BLUE", GREEN_TARGET, "GREEN",
                 RED_TARGET, "RED", YELLOW_TARGET, "YELLOW");
     }

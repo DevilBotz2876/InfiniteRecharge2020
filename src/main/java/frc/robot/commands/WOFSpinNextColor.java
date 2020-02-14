@@ -32,6 +32,7 @@ public class WOFSpinNextColor extends CommandBase {
     @Override
     public void execute() {
         if (!wof.getSpinState()) {
+            wof.wofSpinStop();
             cancel();
             return;
         }
