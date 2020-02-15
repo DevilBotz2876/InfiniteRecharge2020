@@ -73,7 +73,7 @@ public class WheelOfFortune extends SubsystemBase {
   public String readColor() {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-    //SmartDashboard.putNumber("Confidence", match.confidence);
+    SmartDashboard.putNumber("Confidence", match.confidence);
     //colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
     return WOFConstants.COLOR_MAP.get(match.color);
   }
