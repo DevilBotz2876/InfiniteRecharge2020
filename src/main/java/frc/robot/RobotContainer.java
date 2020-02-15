@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
@@ -60,7 +59,8 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);
 
-    SmartDashboard.putData(new WOFSpinNextColor(wof));
+    SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
+    SmartDashboard.putData(new WOFSpinToColor(wof, "RED"));
   }
 
   /**

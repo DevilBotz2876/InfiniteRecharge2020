@@ -34,9 +34,7 @@ public class WheelOfFortune extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  private String lastColor = "NONE";
-  private SuppliedValueWidget<Boolean> colorWidget = Shuffleboard.getTab("WOF").addBoolean("Color", () -> true);
-  private boolean spinState;
+  //private SuppliedValueWidget<Boolean> colorWidget = Shuffleboard.getTab("WOF").addBoolean("Color", () -> true);
 
   public WheelOfFortune() {
     liftTalon = new WPI_TalonSRX(7);
@@ -59,44 +57,24 @@ public class WheelOfFortune extends SubsystemBase {
   }
 
   public void wofSpin(){
-    spinTalon.set(0.5);
+    spinTalon.set(0.3);
   }
 
   public void wofSpinStop(){
     spinTalon.set(0);
   }
 
-  public void setSpinState(boolean spinState) {
-    this.spinState = spinState;
-  }
-
-  public boolean getSpinState() {
-    return spinState;
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    readColor();
+    SmartDashboard.putString("Detected Color", readColor());
   }
 
-  private void readColor() {
+  public String readColor() {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-    String colorString = WOFConstants.COLOR_MAP.get(match.color);
-    if (!lastColor.equals(colorString)) {
-      onNextColor(colorString);
-    }
-    lastColor = colorString;
-    SmartDashboard.putNumber("Confidence", match.confidence);
-    SmartDashboard.putString("Detected Color", colorString);
-    colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
-  }
-
-  private void onNextColor(String colorString) {
-    SmartDashboard.putString("Last Color Change", String.format("Detected color change from %s to %s.", lastColor, colorString));
-    if (spinState) {
-      spinState = false;
-    }
+    //SmartDashboard.putNumber("Confidence", match.confidence);
+    //colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
+    return WOFConstants.COLOR_MAP.get(match.color);
   }
 }
