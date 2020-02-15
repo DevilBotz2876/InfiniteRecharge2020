@@ -10,43 +10,60 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WheelOfFortune;
 
-public class WOFSpinNextColor extends CommandBase {
+public class WOFSpinForSameColor extends CommandBase {
     /**
      * Creates a new WOFSpin.
      */
     private final WheelOfFortune wof;
+    private String lastColor, initialColor;
+    private int currentTimes;
+    private final int times;
+    private boolean finished;
 
-    public WOFSpinNextColor(WheelOfFortune subsystem) {
+    public WOFSpinForSameColor(WheelOfFortune subsystem, int times) {
         // Use addRequirements() here to declare subsystem dependencies.
         wof = subsystem;
+        this.times = times;
         addRequirements(wof);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        wof.setSpinState(true);
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (!wof.getSpinState()) {
-            wof.wofSpinStop();
-            cancel();
-            return;
+        String color = wof.readColor();
+        if (lastColor == null) {
+            initialColor = color;
+            lastColor = initialColor;
         }
-        wof.wofSpin();
+        if (!lastColor.equals(color) && color.equals(initialColor)) {
+            currentTimes++;
+        }
+        lastColor = color;
+        if (currentTimes == times) {
+            wof.wofSpinStop();
+            finished = true;
+        } else {
+            wof.wofSpin();
+        }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        finished = false;
+        currentTimes = 0;
+        lastColor = null;
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return finished;
     }
 }
