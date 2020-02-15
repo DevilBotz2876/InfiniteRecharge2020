@@ -10,48 +10,46 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WheelOfFortune;
 import frc.robot.util.ColorOffset;
+import frc.robot.util.WOFColor;
 
 public class WOFSpinToColor extends CommandBase {
     /**
      * Creates a new WOFSpin.
      */
     private final WheelOfFortune wof;
-    private String color;
-    private boolean finished;
+    private String targetColor, currentColor;
 
     public WOFSpinToColor(WheelOfFortune subsystem, String color) {
         // Use addRequirements() here to declare subsystem dependencies.
         wof = subsystem;
-        this.color = ColorOffset.getOffsettedColor(color);
+        this.targetColor = ColorOffset.getOffsettedColor(color);
         addRequirements(wof);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        wof.wofSpin(0.15);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (wof.readColor().equals(color)) {
-            wof.wofSpinStop();
-            finished = true;
-        } else {
-            wof.wofSpin();
+        WOFColor wofColor = wof.readColor();
+        if (wofColor.getConfidence() > .95) {
+            currentColor = wofColor.getColor();
         }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        finished = false;
+        wof.wofSpinStop();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return finished;
+        return currentColor.equals(targetColor);
     }
 }

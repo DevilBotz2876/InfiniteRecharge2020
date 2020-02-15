@@ -18,7 +18,6 @@ public class WOFSpinForSameColor extends CommandBase {
     private String lastColor, initialColor;
     private int currentTimes;
     private final int times;
-    private boolean finished;
 
     public WOFSpinForSameColor(WheelOfFortune subsystem, int times) {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -30,33 +29,25 @@ public class WOFSpinForSameColor extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        initialColor = wof.readColor().getColor();
+        lastColor = initialColor;
+        wof.wofSpin(0.3);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        String color = wof.readColor();
-        if (lastColor == null) {
-            initialColor = color;
-            lastColor = initialColor;
-        }
+        String color = wof.readColor().getColor();
         if (!lastColor.equals(color) && color.equals(initialColor)) {
             currentTimes++;
         }
         lastColor = color;
-        if (currentTimes == times) {
-            wof.wofSpinStop();
-            finished = true;
-        } else {
-            wof.wofSpin();
-        }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        finished = false;
+        wof.wofSpinStop();
         currentTimes = 0;
         lastColor = null;
     }
@@ -64,6 +55,6 @@ public class WOFSpinForSameColor extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return finished;
+        return currentTimes == times;
     }
 }
