@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WheelOfFortune;
+import frc.robot.util.ColorOffset;
 
 public class WOFSpinToColor extends CommandBase {
     /**
@@ -21,7 +22,7 @@ public class WOFSpinToColor extends CommandBase {
     public WOFSpinToColor(WheelOfFortune subsystem, String color) {
         // Use addRequirements() here to declare subsystem dependencies.
         wof = subsystem;
-        this.color = color;
+        this.color = ColorOffset.getOffsettedColor(color);
         addRequirements(wof);
     }
 
