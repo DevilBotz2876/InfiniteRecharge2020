@@ -69,20 +69,27 @@ public class DriveTrain extends SubsystemBase {
 
   // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
   // 1234 settings
-  rightMaster.setInverted(true);
+  // rightMaster.setInverted(true);
+  // rightFollower.setInverted(InvertType.FollowMaster);
+  // leftMaster.setInverted(true);
+  // leftFollower.setInverted(InvertType.FollowMaster);
+
+
+  // 2876 settings
+  rightMaster.setInverted(false);
   rightFollower.setInverted(InvertType.FollowMaster);
-  leftMaster.setInverted(true);
+  leftMaster.setInverted(false);
   leftFollower.setInverted(InvertType.FollowMaster);
 
   // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
 
   // 2876 settings
-  // leftMaster.setSensorPhase(true);
-  // rightMaster.setSensorPhase(true); 
+  leftMaster.setSensorPhase(true);
+  rightMaster.setSensorPhase(true); 
 
   // 1234 settings
-  leftMaster.setSensorPhase(false);
-  rightMaster.setSensorPhase(true); 
+  // leftMaster.setSensorPhase(false);
+  // rightMaster.setSensorPhase(true); 
   
   
   TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();

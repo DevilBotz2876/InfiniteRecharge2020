@@ -36,11 +36,11 @@ public class Intake extends SubsystemBase {
   }
 
   public void ballIn(){
-    intakeTalon.set(-0.5);
+    intakeTalon.set(-0.6);
   }
 
   public void ballOut(){
-    intakeTalon.set(0.5);
+    intakeTalon.set(0.6);
   }
 
   public void stop(){

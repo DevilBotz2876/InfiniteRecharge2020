@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WheelOfFortune;
+import frc.robot.commands.WOFSpin;
 
 public class WOFDown extends CommandBase {
   /**
