@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WheelOfFortune;
 import frc.robot.util.ColorOffset;
+import frc.robot.util.FMS;
 import frc.robot.util.WOFColor;
 
 public class WOFSpinToColor extends CommandBase {
@@ -19,10 +20,15 @@ public class WOFSpinToColor extends CommandBase {
     private final WheelOfFortune wof;
     private String targetColor, currentColor;
 
-    public WOFSpinToColor(WheelOfFortune subsystem, String color) {
+    public WOFSpinToColor(WheelOfFortune subsystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         wof = subsystem;
-        this.targetColor = ColorOffset.getOffsettedColor(color);
+        String color = FMS.getColorFromGameData();
+        if (color != null) {
+            targetColor = ColorOffset.getOffsettedColor(color);
+        } else {
+            targetColor = null;
+        }
         addRequirements(wof);
     }
 
@@ -50,6 +56,6 @@ public class WOFSpinToColor extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return currentColor.equals(targetColor);
+        return targetColor == null || currentColor.equals(targetColor);
     }
 }
