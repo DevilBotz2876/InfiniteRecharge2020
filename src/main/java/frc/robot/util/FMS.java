@@ -17,4 +17,9 @@ public class FMS {
         return null;
     }
 
+    public static boolean isClimberAvailable() {
+        DriverStation driverStation = DriverStation.getInstance();
+        return driverStation.isOperatorControl() && driverStation.getMatchTime() < 30;
+    }
+    
 }
