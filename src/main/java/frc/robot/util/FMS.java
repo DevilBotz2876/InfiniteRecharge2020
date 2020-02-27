@@ -21,5 +21,5 @@ public class FMS {
         DriverStation driverStation = DriverStation.getInstance();
         return driverStation.isOperatorControl() && driverStation.getMatchTime() < 30;
     }
-    
+
 }

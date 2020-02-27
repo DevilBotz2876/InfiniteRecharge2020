@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WOFConstants;
+import frc.robot.util.FMS;
 import frc.robot.util.WOFColor;
 
 import java.util.Map;
@@ -69,13 +70,22 @@ public class WheelOfFortune extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     WOFColor wofColor = readColor();
-    SmartDashboard.putString("Detected Color", wofColor.getColor());
-    SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
+    if (wofColor != null) {
+      SmartDashboard.putString("Detected Color", wofColor.getColor());
+      SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
+    }
+    String gameDataColor = FMS.getColorFromGameData();
+    if (gameDataColor != null) {
+      SmartDashboard.putString("Target Color", gameDataColor);
+    }
     //colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
   }
 
   public WOFColor readColor() {
     Color detectedColor = m_colorSensor.getColor();
+    if (detectedColor == null) {
+      return null;
+    }
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
     return new WOFColor(WOFConstants.COLOR_MAP.get(match.color), match.confidence);
   }
