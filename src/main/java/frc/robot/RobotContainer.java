@@ -36,7 +36,8 @@ public class RobotContainer {
   private final Arm arm = new Arm();
   private final WheelOfFortune wof = new WheelOfFortune();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final AutoDrive autoCommand = new AutoDrive(drive);
 
   private final XboxController controller = new XboxController(0);
 
@@ -44,6 +45,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    
     // Configure the button bindings
     configureButtonBindings();
 
@@ -61,6 +63,7 @@ public class RobotContainer {
 
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
     SmartDashboard.putData(new WOFSpinToColor(wof, "YELLOW"));
+    SmartDashboard.putData(new AutoDrive(drive));
   }
 
   /**
@@ -112,6 +115,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return autoCommand;
   }
 }
