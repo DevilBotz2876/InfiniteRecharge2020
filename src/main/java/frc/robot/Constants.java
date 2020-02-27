@@ -63,13 +63,15 @@ public final class Constants {
         
         // Following values are from drive characterizatin tool
         //
-        public static final double TRACK_WIDTH_METERS = 0.595;
+        // public static final double TRACK_WIDTH_METERS = 0.595;
+        public static final double TRACK_WIDTH_METERS = .0798;
         // Voltage needed to overcome the motor’s static friction. kS
-        public static final double kS = 0.829;
+        // public static final double kS = 0.829;  
+        public static final double kS = 0.77;
         // Voltage needed to hold (or "cruise") at a given constant velocity. kV
-        public static final double kV = 3.04;
+        public static final double kV = 3.06;
         // Voltage needed to induce a given acceleration in the motor shaft. kA
-        public static final double kA = 0.676;
+        public static final double kA = 0.489;
 
         // ? 
         public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(TRACK_WIDTH_METERS);
