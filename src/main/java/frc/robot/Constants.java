@@ -33,4 +33,8 @@ public final class Constants {
         public static final Map<Color, String> COLOR_MAP = Map.of(BLUE_TARGET, "BLUE", GREEN_TARGET, "GREEN",
                 RED_TARGET, "RED", YELLOW_TARGET, "YELLOW");
     }
+
+    public static final class AutoConstants {
+        
+    }
 }
