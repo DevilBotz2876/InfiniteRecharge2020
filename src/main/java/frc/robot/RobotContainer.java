@@ -20,6 +20,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.WheelOfFortune;
+import frc.robot.subsystems.Climber;
 import frc.robot.util.XboxTrigger;
 
 /**
@@ -35,6 +36,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Arm arm = new Arm();
   private final WheelOfFortune wof = new WheelOfFortune();
+  private final Climber climber = new Climber();
 
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final AutoDrive autoCommand = new AutoDrive(drive);
@@ -105,6 +107,10 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kX.value)
         .whenPressed(new WOFSpin(wof))
         .whenReleased(new WOFSpinStop(wof));
+
+    new JoystickButton(controller, Button.kB.value)
+        .whenReleased(new ClimbToggle(climber));
+        
   }
 
 
