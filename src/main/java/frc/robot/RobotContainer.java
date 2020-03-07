@@ -21,6 +21,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.WheelOfFortune;
 import frc.robot.subsystems.Climber;
+import frc.robot.util.VideoStream;
 import frc.robot.util.XboxTrigger;
 
 /**
@@ -47,7 +48,9 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    
+
+    VideoStream.create();
+
     // Configure the button bindings
     configureButtonBindings();
 
