@@ -14,12 +14,10 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.WheelOfFortune;
 import frc.robot.util.RobotType;
@@ -39,9 +37,6 @@ public class RobotContainer {
   private final Arm arm = new Arm();
   private final WheelOfFortune wof = new WheelOfFortune();
 
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final AutoDrive autoCommand = new AutoDrive(drive, intake);
-
   private final XboxController controller = new XboxController(0);
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -51,6 +46,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
     SmartDashboard.putBoolean("isPracticeBot", RobotType.isPracticeBot);
+
+    AutoDrive autoCommand = new AutoDrive(drive, intake);
+    autoChooser.addOption("Dump And Back Up", autoCommand);
+    DriveDistance backupCommand = new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5);
+    autoChooser.addOption("Back Up", backupCommand);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     VideoStream.create();
 
@@ -69,10 +70,7 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);
 
-    autoChooser.addOption("Dump And Back Up", autoCommand);
-    DriveDistance backupCommand = new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5);
-    autoChooser.addOption("Back Up", backupCommand);
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
     SmartDashboard.putData(new WOFSpinToColor(wof));

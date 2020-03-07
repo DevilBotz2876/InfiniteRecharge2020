@@ -21,6 +21,7 @@ public class DriveRotate extends CommandBase {
         this.degrees = degrees;
         this.rotationSpeed = rotationSpeed;
         m_drive = drive;
+        addRequirements(drive);
     }
 
     @Override
