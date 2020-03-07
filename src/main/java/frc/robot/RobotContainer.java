@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -43,6 +44,8 @@ public class RobotContainer {
 
   private final XboxController controller = new XboxController(0);
 
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -66,14 +69,19 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);
 
+    autoChooser.addOption("Dump And Back Up", autoCommand);
+    DriveDistance backupCommand = new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5);
+    autoChooser.addOption("Back Up", backupCommand);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
     SmartDashboard.putData(new WOFSpinToColor(wof));
 
     SmartDashboard.putData(new DriveTimed(drive, 2.5, 0.5));
-    SmartDashboard.putData(new DriveDistance(drive, 43.5, 0.5));
+    SmartDashboard.putData(new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5));
     SmartDashboard.putData(new AutoDrive(drive, intake));
-    SmartDashboard.putData("Backup", new DriveDistance(drive, 42.5, -0.5));
-    SmartDashboard.putData(new DriveRotate(drive, 90, .7));
+    SmartDashboard.putData("Backup", backupCommand);
+    SmartDashboard.putData(new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, .7));
   }
 
   /**
@@ -116,7 +124,6 @@ public class RobotContainer {
         .whenReleased(new WOFSpinStop(wof));
   }
 
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -124,6 +131,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoCommand;
+    return autoChooser.getSelected();
   }
 }
