@@ -64,6 +64,8 @@ public class RobotContainer {
 
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
     SmartDashboard.putData(new WOFSpinToColor(wof));
+
+    SmartDashboard.putData(new DriveTimed(drive, 2.5));
   }
 
   /**
