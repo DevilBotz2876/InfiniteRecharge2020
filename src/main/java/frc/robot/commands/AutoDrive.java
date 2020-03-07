@@ -17,6 +17,7 @@ public class AutoDrive extends SequentialCommandGroup {
     addCommands(
             new DriveDistance(drive, 42.5, 0.5),
             new BallOutTimed(intake, 2),
-            new DriveDistance(drive, 42.5, -0.5));
+            new DriveDistance(drive, 42.5, -0.5),
+            new DriveRotate(drive, 180, 0.7));
   }
 }

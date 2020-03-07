@@ -41,6 +41,6 @@ public class DriveRotate extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return m_drive.getAngle().getDegrees() >= initialRotation + degrees - 8;
+        return m_drive.getAngle().getDegrees() >= initialRotation + degrees - 66;
     }
 }

@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -91,6 +92,7 @@ public class DriveTrain extends SubsystemBase {
 
   resetGyro();
   resetEncoders();
+  setTalonMode(NeutralMode.Brake);
     // odometry = new DifferentialDriveOdometry(getAngle());
   }
 
@@ -120,7 +122,13 @@ public class DriveTrain extends SubsystemBase {
   public void arcadeDrive(double speed, double rotation) {
     differentialDrive.arcadeDrive(speed, rotation);
   }
-  
+
+  public void setTalonMode(NeutralMode mode) {
+    leftMaster.setNeutralMode(mode);
+    rightMaster.setNeutralMode(mode);
+    leftFollower.setNeutralMode(mode);
+    rightFollower.setNeutralMode(mode);
+  }
   /**
    * Returns the angle of the robot as a Rotation2d.
    *
