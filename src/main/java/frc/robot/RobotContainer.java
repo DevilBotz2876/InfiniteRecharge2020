@@ -20,6 +20,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.WheelOfFortune;
+import frc.robot.subsystems.Climber;
 import frc.robot.util.XboxTrigger;
 
 /**
@@ -35,6 +36,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Arm arm = new Arm();
   private final WheelOfFortune wof = new WheelOfFortune();
+  private final Climber climber = new Climber();
 
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final AutoDrive autoCommand = new AutoDrive(drive);
@@ -75,8 +77,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     new JoystickButton(controller, Button.kBumperRight.value)
-        .whenPressed(new BallIn(intake))
-        .whenReleased(new BallStop(intake));
+        .whenReleased(new BallIn(intake));
 
     new JoystickButton(controller, Button.kBumperLeft.value)
         .whenPressed(new BallOut(intake))
@@ -84,7 +85,6 @@ public class RobotContainer {
 
 
 
-        //does not work, uses buttons b and x instead
     new XboxTrigger(controller, Axis.kRightTrigger.value)
         .whenPressed(new ArmUp(arm))
         .whenReleased(new ArmStop(arm));
@@ -105,6 +105,11 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kX.value)
         .whenPressed(new WOFSpin(wof))
         .whenReleased(new WOFSpinStop(wof));
+
+    new JoystickButton(controller, Button.kB.value)
+        .whenPressed(new ClimbOn(climber))
+        .whenReleased(new ClimbOff(climber));
+
   }
 
 

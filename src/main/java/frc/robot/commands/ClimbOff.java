@@ -7,40 +7,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Climber;
 
-public class BallIn extends CommandBase {
+public class ClimbOff extends CommandBase {
+
+  private final Climber climber;
   /**
-   * Creates a new BallIn.
+   * Creates a new ClimbOff.
    */
-  private final Intake intake;
-
-  public boolean isIntakeRunning = false;
-
-  public BallIn(Intake subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    intake = subsystem;
-    addRequirements(intake);
+  public ClimbOff(Climber subsystem) {
+    climber = subsystem;
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isIntakeRunning = !isIntakeRunning;
-    SmartDashboard.putBoolean("isIntakeRunning", isIntakeRunning);
-    if(isIntakeRunning == true){
-      intake.ballIn();
-    }else{
-      intake.stop();
-    }
+    climber.stopWinding();
   }
 
   // Called once the command ends or is interrupted.

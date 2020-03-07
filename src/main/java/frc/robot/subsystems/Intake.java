@@ -22,8 +22,6 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeTalon = new WPI_TalonSRX(5);
-    
-
 
     TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
 
