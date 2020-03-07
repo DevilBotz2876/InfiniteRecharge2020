@@ -7,41 +7,37 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+public class Climber extends SubsystemBase {
 
-public class Arm extends SubsystemBase {
+  private final WPI_TalonSRX climberTalon;
+
   /**
-   * Creates a new Arm.
+   * Creates a new Climber.
    */
-//TODO add encoder/limit switch
+  public Climber() {
+    climberTalon = new WPI_TalonSRX(9);
 
-  private WPI_TalonSRX armTalon;
-
-  public Arm() {
-    armTalon = new WPI_TalonSRX(6);
-
-    TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
-    armTalon.configAllSettings(allConfigs);
+    climberTalon.setSensorPhase(true);
   }
 
-  public void armUp(){
-    armTalon.set(0.4);
+  public void startWinding() {
+    climberTalon.set(0.2);
   }
 
-  public void armDown(){
-    armTalon.set(-0.25);
+  public void startRewinding() {
+    climberTalon.set(-0.2);
   }
 
-  public void armStop(){
-    armTalon.set(0.055);
+  public void stopWinding() {
+    climberTalon.set(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
 }
- 
