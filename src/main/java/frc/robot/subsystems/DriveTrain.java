@@ -9,10 +9,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -21,35 +25,21 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
 
-   //TODO figure out what these mean and/or if they matter
-  public static final double kMaxSpeed = 3.0; // meters per second
-  public static final double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second 
+  private static final double TRACK_WIDTH = 0.595; // meters
 
-  private static final double kTrackWidth = 0.595; // meters
-
-  // 7in circumference wheel which is .1778m
-  // .1778/3.14 = .0566 diameter
-  // radius is .0556/2 = .0283 
-  // 0.158 was original value we had for radius
-  private static final double kWheelRadius = 0.0283; // meters
-  private static final int kEncoderResolution = 4096;
-
-  private WPI_TalonSRX talonSRX4 = new WPI_TalonSRX(4);
-  private WPI_TalonSRX talonSRX3 = new WPI_TalonSRX(3);
-  private WPI_TalonSRX talonSRX2 = new WPI_TalonSRX(2);
-  private WPI_TalonSRX talonSRX1 = new WPI_TalonSRX(1);
-
-  private WPI_TalonSRX rightMaster = talonSRX2;
-  private WPI_TalonSRX leftMaster = talonSRX4;
-  private WPI_TalonSRX rightFollower = talonSRX1;
-  private WPI_TalonSRX leftFollower = talonSRX3;
+  private WPI_TalonSRX rightMaster = new WPI_TalonSRX(2);
+  private WPI_TalonSRX leftMaster = new WPI_TalonSRX(4);
+  private WPI_TalonSRX rightFollower = new WPI_TalonSRX(1);
+  private WPI_TalonSRX leftFollower = new WPI_TalonSRX(3);
 
   private AHRS navx = new AHRS(SPI.Port.kMXP);
 
@@ -60,7 +50,7 @@ public class DriveTrain extends SubsystemBase {
   private final PIDController rightPIDController = new PIDController(1, 0, 0);
 
   private final DifferentialDriveKinematics kinematics
-      = new DifferentialDriveKinematics(kTrackWidth);
+      = new DifferentialDriveKinematics(TRACK_WIDTH);
 
   public DriveTrain() {
   // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
@@ -101,7 +91,6 @@ public class DriveTrain extends SubsystemBase {
 
   navx.reset();
   resetEncoders();
-
     // odometry = new DifferentialDriveOdometry(getAngle());
   }
 
@@ -110,12 +99,15 @@ public class DriveTrain extends SubsystemBase {
     rightMaster.setSelectedSensorPosition(0, 0, 0);
   }
 
-  public int getAverageEncoderDistance() {
-    int l = leftMaster.getSelectedSensorPosition();
-    int r = rightMaster.getSelectedSensorPosition();
-    return (l+r)/2;
+  /**
+   * Calculates the distance traveled by the robot by reading encoder values
+   * @return the linear distance traveled by the robot in inches
+   */
+  public double getAverageEncoderDistance() {
+    double leftDistance = leftMaster.getSelectedSensorPosition() * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
+    double rightDistance = rightMaster.getSelectedSensorPosition() * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
+    return -((leftDistance + rightDistance) / 2);
   }
-
   
   public void tankDrive(double leftValue, double rightValue) {
     differentialDrive.tankDrive(leftValue, rightValue);
@@ -158,6 +150,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-
+    double dist = getAverageEncoderDistance();
+    SmartDashboard.putNumber("Distance", dist);
   }
 }

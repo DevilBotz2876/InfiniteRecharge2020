@@ -8,12 +8,13 @@ public class DriveTimed extends CommandBase {
      * Creates a new AutoDrive.
      */
     private final DriveTrain m_drive;
-    private final double desiredTime;
+    private final double desiredTime, speed;
     private long startTime;
 
-    public DriveTimed(DriveTrain drive, double desiredTime) {
+    public DriveTimed(DriveTrain drive, double desiredTime, double speed) {
         m_drive = drive;
         this.desiredTime = desiredTime;
+        this.speed = speed;
         addRequirements(drive);
     }
 
@@ -26,7 +27,7 @@ public class DriveTimed extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_drive.arcadeDrive(0.5, 0);
+        m_drive.arcadeDrive(speed, 0);
     }
 
     // Called once the command ends or is interrupted.

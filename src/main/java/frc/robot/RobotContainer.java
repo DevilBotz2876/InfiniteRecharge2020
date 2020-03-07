@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
@@ -31,14 +32,13 @@ import frc.robot.util.XboxTrigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain drive = new DriveTrain();
   private final Intake intake = new Intake();
   private final Arm arm = new Arm();
-  private final WheelOfFortune wof = new WheelOfFortune();
+  //private final WheelOfFortune wof = new WheelOfFortune();
 
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final AutoDrive autoCommand = new AutoDrive(drive);
+  private final AutoDrive autoCommand = new AutoDrive(drive, intake);
 
   private final XboxController controller = new XboxController(0);
 
@@ -63,11 +63,15 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);
 
+    /*
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
     SmartDashboard.putData(new WOFSpinToColor(wof));
 
-    SmartDashboard.putData(new DriveTimed(drive, 2.5));
-    SmartDashboard.putData(new AutoDrive(drive));
+     */
+
+    SmartDashboard.putData(new DriveTimed(drive, 2.5, 0.5));
+    SmartDashboard.putData(new DriveDistance(drive, 43.5, 0.5));
+    SmartDashboard.putData(new AutoDrive(drive, intake));
   }
 
   /**
@@ -97,7 +101,7 @@ public class RobotContainer {
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
 
-
+/*
     new JoystickButton(controller, Button.kY.value)
         .whenPressed(new WOFUp(wof))
         .whenReleased(new WOFStop(wof));
@@ -109,6 +113,8 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kX.value)
         .whenPressed(new WOFSpin(wof))
         .whenReleased(new WOFSpinStop(wof));
+
+ */
   }
 
 
