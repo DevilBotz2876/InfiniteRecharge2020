@@ -71,6 +71,8 @@ public class RobotContainer {
     SmartDashboard.putData(new AutoDrive(drive, intake));
     SmartDashboard.putData("Backup", new DriveDistance(drive, 42.5, -0.5));
     SmartDashboard.putData(new DriveRotate(drive, 90, .7));
+
+    SmartDashboard.putData(new TurnToAngle(90, drive));
   }
 
   /**

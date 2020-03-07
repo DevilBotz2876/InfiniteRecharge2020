@@ -37,4 +37,16 @@ public final class Constants {
     public static final class AutoConstants {
         public static final double kWheelDiameterInches = 6;
     }
+
+    public static final class Auto {
+        public static final double kTurnP = 1;
+        public static final double kTurnI = 0;
+        public static final double kTurnD = 0;
+        public static final double kTurnToleranceDeg = 5;
+        public static final double kTurnRateToleranceDegPerS = 10;
+        
+        public static final double kMaxTurnRateDegPerS = 100;
+        public static final double kMaxTurnAccelerationDegPerSSquared = 300;
+    }
+
 }

@@ -164,5 +164,10 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Distance", getAverageEncoderDistance());
     SmartDashboard.putNumber("Gyro", getAngle().getDegrees());
+    SmartDashboard.putNumber("Heading", getHeading());
+  }
+
+  public double getHeading() {
+    return -Math.IEEEremainder(navx.getAngle(), 360);
   }
 }
