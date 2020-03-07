@@ -22,15 +22,21 @@ public class DriveDistance extends CommandBase {
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public DriveDistance(double inches, double speed, DriveTrain drive) {
+  public DriveDistance(DriveTrain drive, double inches, double speed) {
     m_distance = inches;
     m_speed = speed;
     m_drive = drive;
+    addRequirements(drive);
   }
 
   @Override
   public void initialize() {
     m_drive.resetEncoders();
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
     m_drive.arcadeDrive(m_speed, 0);
   }
 
@@ -41,7 +47,6 @@ public class DriveDistance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(m_drive.getAverageEncoderDistance()) >= m_distance;
-    // return false;
+    return m_drive.getAverageEncoderDistance() >= m_distance;
   }
 }

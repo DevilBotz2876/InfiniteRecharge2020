@@ -8,54 +8,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.WheelOfFortune;
-import frc.robot.util.ColorOffset;
-import frc.robot.util.FMS;
-import frc.robot.util.WOFColor;
+import frc.robot.subsystems.Intake;
 
-public class WOFSpinToColor extends CommandBase {
+public class BallOutTimed extends CommandBase {
     /**
-     * Creates a new WOFSpin.
+     * Creates a new BallOut.
      */
-    private final WheelOfFortune wof;
-    private String targetColor, currentColor;
+    private final Intake intake;
+    private final double desiredTime;
+    private long startTime;
 
-    public WOFSpinToColor(WheelOfFortune subsystem) {
+    public BallOutTimed(Intake subsystem, double desiredTime) {
         // Use addRequirements() here to declare subsystem dependencies.
-        wof = subsystem;
-        String color = FMS.getColorFromGameData();
-        if (color != null) {
-            targetColor = ColorOffset.getOffsettedColor(color);
-        } else {
-            targetColor = null;
-        }
-        addRequirements(wof);
+        intake = subsystem;
+        this.desiredTime = desiredTime;
+        addRequirements(intake);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        wof.wofSpin(0.15);
+        startTime = System.currentTimeMillis();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        WOFColor wofColor = wof.readColor();
-        if (wofColor.getConfidence() > .95) {
-            currentColor = wofColor.getColor();
-        }
+        intake.ballOut();
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        wof.wofSpinStop();
+        intake.stop();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return targetColor == null || currentColor.equals(targetColor);
+        return (System.currentTimeMillis() - startTime) / 1000.0 >= desiredTime;
     }
 }

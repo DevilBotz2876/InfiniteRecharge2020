@@ -8,18 +8,22 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-// import com.revrobotics.ColorMatch;
-// import com.revrobotics.ColorMatchResult;
-// import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WOFConstants;
+import frc.robot.util.FMS;
+import frc.robot.util.RobotType;
 import frc.robot.util.WOFColor;
+
+import java.util.Map;
 
 public class WheelOfFortune extends SubsystemBase {
   /**
@@ -30,26 +34,18 @@ public class WheelOfFortune extends SubsystemBase {
   /**
    * Change the I2C port below to match the connection of your color sensor
    */
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorSensorV3 m_colorSensor;
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  private String lastColor = "NONE";
   //private SuppliedValueWidget<Boolean> colorWidget = Shuffleboard.getTab("WOF").addBoolean("Color", () -> true);
 
   public WheelOfFortune() {
+    m_colorSensor = RobotType.isPracticeBot ? null : new ColorSensorV3(I2C.Port.kOnboard);
+
     liftTalon = new WPI_TalonSRX(7);
     spinTalon = new WPI_TalonSRX(8);
-
-    // m_colorMatcher.addColorMatch(WOFConstants.BLUE_TARGET);
-    // m_colorMatcher.addColorMatch(WOFConstants.GREEN_TARGET);
-    // m_colorMatcher.addColorMatch(WOFConstants.RED_TARGET);
-    // m_colorMatcher.addColorMatch(WOFConstants.YELLOW_TARGET);
-
-    // // Create Boolean widget that displays the color
-    // colorWidget = Constants.WOFConstants.COLOR_MAP.add("Color", false);
-    // colorWidget.withPosition(0, 4);
-    // colorWidget.withProperties(COLOR_MAP.of("colorWhenFalse", "black"));
-    // colorWidgetEntry = colorWidget.getEntry();
+    for (Color color : WOFConstants.COLOR_MAP.keySet()) {
+      m_colorMatcher.addColorMatch(color);
+    }
   }
 
   public void wofUp(){
@@ -76,34 +72,25 @@ public class WheelOfFortune extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // Color detectedColor = m_colorSensor.getColor();
-    // ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-    // String colorString = WOFConstants.COLOR_MAP.get(match.color);
-    // if (!lastColor.equals(colorString)) {
-    //   SmartDashboard.putString("Last Color Change", String.format("Detected color change from %s to %s.", lastColor, colorString));
-    //   //fire change color condition
-    // }
-    // lastColor = colorString;
-
-    // SmartDashboard.putNumber("Confidence", match.confidence);
-    // SmartDashboard.putString("Detected Color", colorString);
-
-    // Color color = robotContainer.readColor();
-    
-    // if (!colorSet) {
-    //   // Choose "true" color based on color of wheel required for Position Control
-    //   colorWidget.withProperties(Map.of("colorWhenTrue", color.value));
-    //   colorWidgetEntry.setBoolean(true);
-    //   colorSet = true;
-
-    // WOFColor wofColor = readColor();
-    // SmartDashboard.putString("Detected Color", wofColor.getColor());
-    // SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
+    String gameDataColor = FMS.getColorFromGameData();
+    if (gameDataColor != null) {
+      SmartDashboard.putString("Target Color", gameDataColor);
+    }
+    if (m_colorSensor != null) {
+      WOFColor wofColor = readColor();
+      if (wofColor != null) {
+        SmartDashboard.putString("Detected Color", wofColor.getColor());
+        SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
+      }
+    }
     //colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
   }
 
   public WOFColor readColor() {
     Color detectedColor = m_colorSensor.getColor();
+    if (detectedColor == null) {
+      return null;
+    }
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
     return new WOFColor(WOFConstants.COLOR_MAP.get(match.color), match.confidence);
   }

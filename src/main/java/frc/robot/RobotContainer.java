@@ -11,16 +11,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.WheelOfFortune;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.*;
+import frc.robot.util.RobotType;
 import frc.robot.util.VideoStream;
 import frc.robot.util.XboxTrigger;
 
@@ -32,22 +29,27 @@ import frc.robot.util.XboxTrigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain drive = new DriveTrain();
   private final Intake intake = new Intake();
   private final Arm arm = new Arm();
   private final WheelOfFortune wof = new WheelOfFortune();
   private final Climber climber = new Climber();
 
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final AutoDrive autoCommand = new AutoDrive(drive);
-
   private final XboxController controller = new XboxController(0);
+
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    SmartDashboard.putBoolean("isPracticeBot", RobotType.isPracticeBot);
+
+    AutoDrive autoCommand = new AutoDrive(drive, intake);
+    autoChooser.addOption("Dump And Back Up", autoCommand);
+    DriveDistance backupCommand = new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5);
+    autoChooser.addOption("Back Up", backupCommand);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     VideoStream.create();
 
@@ -67,8 +69,13 @@ public class RobotContainer {
     SmartDashboard.putData(drive);
 
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
-    SmartDashboard.putData(new WOFSpinToColor(wof, "YELLOW"));
-    SmartDashboard.putData(new AutoDrive(drive));
+    SmartDashboard.putData(new WOFSpinToColor(wof));
+
+    SmartDashboard.putData(new DriveTimed(drive, 2.5, 0.5));
+    SmartDashboard.putData(new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5));
+    SmartDashboard.putData(new AutoDrive(drive, intake));
+    SmartDashboard.putData("Backup", backupCommand);
+    SmartDashboard.putData(new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, .7));
   }
 
   /**
@@ -99,7 +106,6 @@ public class RobotContainer {
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
 
-
     new JoystickButton(controller, Button.kY.value)
         .whenPressed(new WOFUp(wof))
         .whenReleased(new WOFStop(wof));
@@ -118,7 +124,6 @@ public class RobotContainer {
 
   }
 
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -126,6 +131,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoCommand;
+    return autoChooser.getSelected();
   }
 }

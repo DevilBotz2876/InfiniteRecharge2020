@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.RobotType;
 
 public class Intake extends SubsystemBase {
   /**
@@ -31,19 +32,16 @@ public class Intake extends SubsystemBase {
 
     intakeTalon.configAllSettings(allConfigs);
 
-    is_on = false;
-    
-
     
   }
 
   public void ballIn(){
-    intakeTalon.set(-0.6);
+    intakeTalon.set(RobotType.isPracticeBot ? -0.6 : 0.6);
     is_on = true;
   }
 
   public void ballOut(){
-    intakeTalon.set(0.6);
+    intakeTalon.set(RobotType.isPracticeBot ? 0.6 : -0.6);
     is_on = true;
   }
 
@@ -62,6 +60,6 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("IntakeOn", is_on);
-    
+
   }
 }
