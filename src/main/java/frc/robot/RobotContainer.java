@@ -35,7 +35,7 @@ public class RobotContainer {
   private final DriveTrain drive = new DriveTrain();
   private final Intake intake = new Intake();
   private final Arm arm = new Arm();
-  //private final WheelOfFortune wof = new WheelOfFortune();
+  private final WheelOfFortune wof = new WheelOfFortune();
 
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final AutoDrive autoCommand = new AutoDrive(drive, intake);
@@ -63,11 +63,8 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);
 
-    /*
     SmartDashboard.putData(new WOFSpinForSameColor(wof, 6));
     SmartDashboard.putData(new WOFSpinToColor(wof));
-
-     */
 
     SmartDashboard.putData(new DriveTimed(drive, 2.5, 0.5));
     SmartDashboard.putData(new DriveDistance(drive, 43.5, 0.5));
@@ -103,7 +100,6 @@ public class RobotContainer {
         .whenPressed(new ArmDown(arm))
         .whenReleased(new ArmStop(arm));
 
-/*
     new JoystickButton(controller, Button.kY.value)
         .whenPressed(new WOFUp(wof))
         .whenReleased(new WOFStop(wof));
@@ -115,8 +111,6 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kX.value)
         .whenPressed(new WOFSpin(wof))
         .whenReleased(new WOFSpinStop(wof));
-
- */
   }
 
 
