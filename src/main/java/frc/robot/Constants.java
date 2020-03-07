@@ -12,6 +12,7 @@ import java.util.Map;
 import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.util.RobotType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -36,5 +37,7 @@ public final class Constants {
 
     public static final class AutoConstants {
         public static final double kWheelDiameterInches = 6;
+        public static final double DISTANCE_TO_GOAL = RobotType.isPracticeBot ? 42.5 : 83.5;
+        public static final double ROTATE_ANGLE = RobotType.isPracticeBot ? 114 : 94;
     }
 }

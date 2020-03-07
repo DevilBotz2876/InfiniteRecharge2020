@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 
@@ -15,9 +16,9 @@ public class AutoDrive extends SequentialCommandGroup {
 
   public AutoDrive(DriveTrain drive, Intake intake) {
     addCommands(
-            new DriveDistance(drive, 42.5, 0.5),
+            new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5),
             new BallOutTimed(intake, 2),
-            new DriveDistance(drive, 42.5, -0.5),
-            new DriveRotate(drive, 180, 0.7));
+            new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5),
+            new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, 0.7));
   }
 }

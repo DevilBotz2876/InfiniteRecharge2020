@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.util.RobotType;
 
 public class DriveTrain extends SubsystemBase {
   /**
@@ -54,45 +55,37 @@ public class DriveTrain extends SubsystemBase {
       = new DifferentialDriveKinematics(TRACK_WIDTH);
 
   public DriveTrain() {
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
-  rightFollower.follow(rightMaster);
-  leftFollower.follow(leftMaster);
+    // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
+    rightFollower.follow(rightMaster);
+    leftFollower.follow(leftMaster);
 
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
-  // 1234 settings
-  rightMaster.setInverted(true);
-  rightFollower.setInverted(InvertType.FollowMaster);
-  leftMaster.setInverted(true);
-  leftFollower.setInverted(InvertType.FollowMaster);
+    // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#inverts
+    if (RobotType.isPracticeBot) {
+      rightMaster.setInverted(true);
+      rightFollower.setInverted(InvertType.FollowMaster);
+      leftMaster.setInverted(true);
+      leftFollower.setInverted(InvertType.FollowMaster);
+      leftMaster.setSensorPhase(false);
+      rightMaster.setSensorPhase(true);
+    } else {
+      rightMaster.setInverted(false);
+      rightFollower.setInverted(InvertType.FollowMaster);
+      leftMaster.setInverted(false);
+      leftFollower.setInverted(InvertType.FollowMaster);
+      leftMaster.setSensorPhase(true);
+      rightMaster.setSensorPhase(true);
+    }
 
+    TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
 
-  // 2876 settings
-  // rightMaster.setInverted(false);
-  // rightFollower.setInverted(InvertType.FollowMaster);
-  // leftMaster.setInverted(false);
-  // leftFollower.setInverted(InvertType.FollowMaster);
+    allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
 
-  // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
+    leftMaster.configAllSettings(allConfigs);
+    rightMaster.configAllSettings(allConfigs);
 
-  // 2876 settings
-  // leftMaster.setSensorPhase(true);
-  // rightMaster.setSensorPhase(true); 
-
-  // 1234 settings
-  leftMaster.setSensorPhase(false);
-  rightMaster.setSensorPhase(true); 
-  
-  
-  TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
-
-  allConfigs.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
-
-  leftMaster.configAllSettings(allConfigs);
-  rightMaster.configAllSettings(allConfigs);
-
-  resetGyro();
-  resetEncoders();
-  setTalonMode(NeutralMode.Brake);
+    resetGyro();
+    resetEncoders();
+    setTalonMode(NeutralMode.Brake);
     // odometry = new DifferentialDriveOdometry(getAngle());
   }
 
@@ -112,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
   public double getAverageEncoderDistance() {
     double leftDistance = leftMaster.getSelectedSensorPosition() * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
     double rightDistance = rightMaster.getSelectedSensorPosition() * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
-    return -((leftDistance + rightDistance) / 2);
+    return ((Math.abs(leftDistance) + Math.abs(rightDistance)) / 2);
   }
   
   public void tankDrive(double leftValue, double rightValue) {

@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.util.RobotType;
 
 public class DriveRotate extends CommandBase {
     private final DriveTrain m_drive;
@@ -31,7 +32,7 @@ public class DriveRotate extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_drive.arcadeDrive(0, rotationSpeed);
+        m_drive.arcadeDrive(0, RobotType.isPracticeBot ? rotationSpeed : -rotationSpeed);
     }
 
     @Override
@@ -41,6 +42,6 @@ public class DriveRotate extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return m_drive.getAngle().getDegrees() >= initialRotation + degrees - 66;
+        return m_drive.getAngle().getDegrees() >= initialRotation + degrees;
     }
 }

@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WOFConstants;
 import frc.robot.util.FMS;
+import frc.robot.util.RobotType;
 import frc.robot.util.WOFColor;
 
 import java.util.Map;
@@ -33,12 +34,13 @@ public class WheelOfFortune extends SubsystemBase {
   /**
    * Change the I2C port below to match the connection of your color sensor
    */
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorSensorV3 m_colorSensor;
   private final ColorMatch m_colorMatcher = new ColorMatch();
   //private SuppliedValueWidget<Boolean> colorWidget = Shuffleboard.getTab("WOF").addBoolean("Color", () -> true);
 
   public WheelOfFortune() {
+    m_colorSensor = RobotType.isPracticeBot ? null : new ColorSensorV3(I2C.Port.kOnboard);
+
     liftTalon = new WPI_TalonSRX(7);
     spinTalon = new WPI_TalonSRX(8);
     for (Color color : WOFConstants.COLOR_MAP.keySet()) {
@@ -69,14 +71,17 @@ public class WheelOfFortune extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    WOFColor wofColor = readColor();
-    if (wofColor != null) {
-      SmartDashboard.putString("Detected Color", wofColor.getColor());
-      SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
-    }
+
     String gameDataColor = FMS.getColorFromGameData();
     if (gameDataColor != null) {
       SmartDashboard.putString("Target Color", gameDataColor);
+    }
+    if (m_colorSensor != null) {
+      WOFColor wofColor = readColor();
+      if (wofColor != null) {
+        SmartDashboard.putString("Detected Color", wofColor.getColor());
+        SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
+      }
     }
     //colorWidget.withProperties(Map.of("colorWhenTrue", colorString));
   }
