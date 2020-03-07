@@ -28,19 +28,24 @@ public class BallIn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(intake.isOn()) {
+      intake.stop();
+    } else {
+      intake.ballIn();
+    }
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isIntakeRunning = !isIntakeRunning;
-    SmartDashboard.putBoolean("isIntakeRunning", isIntakeRunning);
-    if(isIntakeRunning == true){
-      intake.ballIn();
-    }else{
-      intake.stop();
-    }
+    // isIntakeRunning = !isIntakeRunning;
+    // SmartDashboard.putBoolean("isIntakeRunning", isIntakeRunning);
+    // if(isIntakeRunning == true){
+    //   intake.ballIn();
+    // }else{
+    //   intake.stop();
+    // }
   }
 
   // Called once the command ends or is interrupted.

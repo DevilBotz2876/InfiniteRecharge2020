@@ -76,8 +76,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    // new JoystickButton(controller, Button.kBumperRight.value)
+    //     .whenReleased(new BallIn(intake));
     new JoystickButton(controller, Button.kBumperRight.value)
-        .whenReleased(new BallIn(intake));
+    .whenPressed(new BallIn(intake))
+    .whenReleased(new BallStop(intake));
 
     new JoystickButton(controller, Button.kBumperLeft.value)
         .whenPressed(new BallOut(intake))
