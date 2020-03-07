@@ -89,9 +89,13 @@ public class DriveTrain extends SubsystemBase {
   leftMaster.configAllSettings(allConfigs);
   rightMaster.configAllSettings(allConfigs);
 
-  navx.reset();
+  resetGyro();
   resetEncoders();
     // odometry = new DifferentialDriveOdometry(getAngle());
+  }
+
+  public void resetGyro() {
+    navx.reset();
   }
 
   public void resetEncoders() {
@@ -150,7 +154,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double dist = getAverageEncoderDistance();
-    SmartDashboard.putNumber("Distance", dist);
+    SmartDashboard.putNumber("Distance", getAverageEncoderDistance());
+    SmartDashboard.putNumber("Gyro", getAngle().getDegrees());
   }
 }

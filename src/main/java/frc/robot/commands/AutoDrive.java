@@ -15,7 +15,8 @@ public class AutoDrive extends SequentialCommandGroup {
 
   public AutoDrive(DriveTrain drive, Intake intake) {
     addCommands(
-            new DriveDistance(drive, 43.5, 0.5),
-            new BallOutTimed(intake, 2));
+            new DriveDistance(drive, 42.5, 0.5),
+            new BallOutTimed(intake, 2),
+            new DriveDistance(drive, 42.5, -0.5));
   }
 }
