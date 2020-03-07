@@ -74,6 +74,13 @@ public class DriveTrain extends SubsystemBase {
   leftMaster.setInverted(true);
   leftFollower.setInverted(InvertType.FollowMaster);
 
+
+  // 2876 settings
+  // rightMaster.setInverted(false);
+  // rightFollower.setInverted(InvertType.FollowMaster);
+  // leftMaster.setInverted(false);
+  // leftFollower.setInverted(InvertType.FollowMaster);
+
   // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#sensor-phase
 
   // 2876 settings
@@ -102,13 +109,20 @@ public class DriveTrain extends SubsystemBase {
     leftMaster.setSelectedSensorPosition(0, 0, 0);
     rightMaster.setSelectedSensorPosition(0, 0, 0);
   }
+
+  public int getAverageEncoderDistance() {
+    int l = leftMaster.getSelectedSensorPosition();
+    int r = rightMaster.getSelectedSensorPosition();
+    return (l+r)/2;
+  }
+
   
   public void tankDrive(double leftValue, double rightValue) {
     differentialDrive.tankDrive(leftValue, rightValue);
   }
 
-  public void arcadeDrive(double leftValue, double rightValue) {
-    differentialDrive.arcadeDrive(leftValue, rightValue);
+  public void arcadeDrive(double speed, double rotation) {
+    differentialDrive.arcadeDrive(speed, rotation);
   }
   
   /**

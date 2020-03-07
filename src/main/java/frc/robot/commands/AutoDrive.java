@@ -8,19 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.WheelOfFortune;
-import frc.robot.commands.WOFSpin;
+import frc.robot.subsystems.DriveTrain;
 
-public class WOFDown extends CommandBase {
+public class AutoDrive extends CommandBase {
   /**
-   * Creates a new WOFDown.
+   * Creates a new AutoDrive.
    */
-  private final WheelOfFortune wof;
+  private final DriveTrain m_drive;
 
-  public WOFDown(WheelOfFortune subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    wof = subsystem;
-    addRequirements(wof);
+  public AutoDrive(DriveTrain drive) {
+    m_drive = drive;
+    addRequirements(drive);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +29,7 @@ public class WOFDown extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    wof.wofDown();
+    m_drive.arcadeDrive(0.5, 0);
   }
 
   // Called once the command ends or is interrupted.

@@ -58,7 +58,7 @@ public class DriveCommand extends CommandBase {
     f = (a * (f*f*f)) + ((1-a) * f); 
     r = (a * (r*r*r)) + ((1-a) * r); 
 
-    m_drive.arcadeDrive(f, r);
+    m_drive.arcadeDrive(f, -r);
   }
 
   // Called once the command ends or is interrupted.

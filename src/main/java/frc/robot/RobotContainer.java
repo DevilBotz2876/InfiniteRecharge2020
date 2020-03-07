@@ -37,7 +37,8 @@ public class RobotContainer {
   private final Arm arm = new Arm();
   private final WheelOfFortune wof = new WheelOfFortune();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final AutoDrive autoCommand = new AutoDrive(drive);
 
   private final XboxController controller = new XboxController(0);
 
@@ -66,6 +67,7 @@ public class RobotContainer {
     SmartDashboard.putData(new WOFSpinToColor(wof));
 
     SmartDashboard.putData(new DriveTimed(drive, 2.5));
+    SmartDashboard.putData(new AutoDrive(drive));
   }
 
   /**
@@ -117,6 +119,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return autoCommand;
   }
 }

@@ -36,7 +36,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void armStop(){
-    armTalon.set(0.15);
+    armTalon.set(0.055);
   }
 
   @Override
