@@ -7,22 +7,17 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Climber;
 
-public class BallIn extends CommandBase {
-  /**
-   * Creates a new BallIn.
-   */
-  private final Intake intake;
+public class ClimbOn extends CommandBase {
 
-  public boolean isIntakeRunning = false;
+  private final Climber climber;
 
-  public BallIn(Intake subsystem) {
+  public ClimbOn(Climber subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intake = subsystem;
-    addRequirements(intake);
+    this.climber = subsystem;
+    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
@@ -34,13 +29,7 @@ public class BallIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isIntakeRunning = !isIntakeRunning;
-    SmartDashboard.putBoolean("isIntakeRunning", isIntakeRunning);
-    if(isIntakeRunning == true){
-      intake.ballIn();
-    }else{
-      intake.stop();
-    }
+    climber.startRewinding();
   }
 
   // Called once the command ends or is interrupted.
@@ -51,6 +40,6 @@ public class BallIn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -10,35 +10,26 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class ClimbToggle extends CommandBase {
+public class ClimbOff extends CommandBase {
 
   private final Climber climber;
-
-  private boolean isClimbing = false;
-
   /**
-   * Creates a new ClimbToggle.
+   * Creates a new ClimbOff.
    */
-  public ClimbToggle(Climber subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.climber = subsystem;
-    addRequirements(this.climber);
+  public ClimbOff(Climber subsystem) {
+    climber = subsystem;
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.isClimbing = !this.isClimbing;
-    if (this.isClimbing) {
-      climber.startWinding();
-    } else {
-      climber.stopWinding();
-    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    climber.stopWinding();
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +40,6 @@ public class ClimbToggle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

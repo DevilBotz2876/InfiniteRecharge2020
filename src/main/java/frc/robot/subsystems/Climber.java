@@ -19,10 +19,16 @@ public class Climber extends SubsystemBase {
    */
   public Climber() {
     climberTalon = new WPI_TalonSRX(9);
+
+    climberTalon.setSensorPhase(true);
   }
 
   public void startWinding() {
     climberTalon.set(0.2);
+  }
+
+  public void startRewinding() {
+    climberTalon.set(-0.2);
   }
 
   public void stopWinding() {

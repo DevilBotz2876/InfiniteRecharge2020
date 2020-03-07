@@ -77,8 +77,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     new JoystickButton(controller, Button.kBumperRight.value)
-        .whenPressed(new BallIn(intake))
-        .whenReleased(new BallStop(intake));
+        .whenReleased(new BallIn(intake));
 
     new JoystickButton(controller, Button.kBumperLeft.value)
         .whenPressed(new BallOut(intake))
@@ -86,7 +85,6 @@ public class RobotContainer {
 
 
 
-        //does not work, uses buttons b and x instead
     new XboxTrigger(controller, Axis.kRightTrigger.value)
         .whenPressed(new ArmUp(arm))
         .whenReleased(new ArmStop(arm));
@@ -109,8 +107,9 @@ public class RobotContainer {
         .whenReleased(new WOFSpinStop(wof));
 
     new JoystickButton(controller, Button.kB.value)
-        .whenReleased(new ClimbToggle(climber));
-        
+        .whenPressed(new ClimbOn(climber))
+        .whenReleased(new ClimbOff(climber));
+
   }
 
 
