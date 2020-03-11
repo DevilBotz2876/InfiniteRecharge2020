@@ -10,10 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveDistance extends CommandBase {
+public class DriveDistanceOrTime extends CommandBase {
   private final DriveTrain m_drive;
-  private final double m_distance;
-  private final double m_speed;
+  private final double m_distance, m_speed, desiredTime;
+  private long startTime;
 
   /**
    * Creates a new DriveDistance.
@@ -22,16 +22,18 @@ public class DriveDistance extends CommandBase {
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public DriveDistance(DriveTrain drive, double inches, double speed) {
+  public DriveDistanceOrTime(DriveTrain drive, double inches, double speed, double desiredTime) {
     m_distance = inches;
     m_speed = speed;
     m_drive = drive;
+    this.desiredTime = desiredTime;
     addRequirements(drive);
   }
 
   @Override
   public void initialize() {
     m_drive.resetEncoders();
+    startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,6 +49,6 @@ public class DriveDistance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return m_drive.getAverageEncoderDistance() >= m_distance;
+    return m_drive.getAverageEncoderDistance() >= m_distance || (System.currentTimeMillis() - startTime) / 1000.0 >= desiredTime;
   }
 }

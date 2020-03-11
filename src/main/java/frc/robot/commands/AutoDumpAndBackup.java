@@ -12,13 +12,13 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 
-public class AutoDrive extends SequentialCommandGroup {
+public class AutoDumpAndBackup extends SequentialCommandGroup {
 
-  public AutoDrive(DriveTrain drive, Intake intake) {
+  public AutoDumpAndBackup(DriveTrain drive, Intake intake) {
     addCommands(
-            new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5),
+            new DriveDistanceOrTime(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5, Constants.AutoConstants.DRIVE_TIMEOUT),
             new BallOutTimed(intake, 2),
-            new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5),
+            new DriveDistanceOrTime(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5, Constants.AutoConstants.DRIVE_TIMEOUT),
             new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, 0.7));
   }
 }

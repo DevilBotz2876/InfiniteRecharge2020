@@ -45,9 +45,9 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putBoolean("isPracticeBot", RobotType.isPracticeBot);
 
-    AutoDrive autoCommand = new AutoDrive(drive, intake);
+    AutoDumpAndBackup autoCommand = new AutoDumpAndBackup(drive, intake);
     autoChooser.addOption("Dump And Back Up", autoCommand);
-    DriveDistance backupCommand = new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5);
+    DriveDistanceOrTime backupCommand = new DriveDistanceOrTime(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5, Constants.AutoConstants.DRIVE_TIMEOUT);
     autoChooser.addOption("Back Up", backupCommand);
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -72,8 +72,8 @@ public class RobotContainer {
     SmartDashboard.putData(new WOFSpinToColor(wof));
 
     SmartDashboard.putData(new DriveTimed(drive, 2.5, 0.5));
-    SmartDashboard.putData(new DriveDistance(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5));
-    SmartDashboard.putData(new AutoDrive(drive, intake));
+    SmartDashboard.putData(new DriveDistanceOrTime(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5, Constants.AutoConstants.DRIVE_TIMEOUT));
+    SmartDashboard.putData(new AutoDumpAndBackup(drive, intake));
     SmartDashboard.putData("Backup", backupCommand);
     SmartDashboard.putData(new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, .7));
   }
