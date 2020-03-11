@@ -21,6 +21,7 @@ public class DriveDistanceOrTime extends CommandBase {
    * @param inches The number of inches the robot will drive
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
+   * @param desiredTime The time to wait before giving up and ending the command
    */
   public DriveDistanceOrTime(DriveTrain drive, double inches, double speed, double desiredTime) {
     m_distance = inches;
