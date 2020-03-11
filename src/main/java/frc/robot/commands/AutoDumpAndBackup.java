@@ -17,6 +17,7 @@ public class AutoDumpAndBackup extends SequentialCommandGroup {
   public AutoDumpAndBackup(DriveTrain drive, Intake intake) {
     addCommands(
             new DriveDistanceOrTime(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, 0.5, Constants.AutoConstants.DRIVE_TIMEOUT),
+            //TODO: Add arm down to position -400 then arm up to position 250
             new BallOutTimed(intake, 2),
             new DriveDistanceOrTime(drive, Constants.AutoConstants.DISTANCE_TO_GOAL, -0.5, Constants.AutoConstants.DRIVE_TIMEOUT),
             new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, 0.7));

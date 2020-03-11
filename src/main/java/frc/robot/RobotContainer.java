@@ -76,6 +76,9 @@ public class RobotContainer {
     SmartDashboard.putData(new AutoDumpAndBackup(drive, intake));
     SmartDashboard.putData("Backup", backupCommand);
     SmartDashboard.putData(new DriveRotate(drive, Constants.AutoConstants.ROTATE_ANGLE, .7));
+
+    SmartDashboard.putData("Arm Up", new ArmPosition(arm, 250, 2));
+    SmartDashboard.putData("Arm Down", new ArmPosition(arm, -400, 2));
   }
 
   /**

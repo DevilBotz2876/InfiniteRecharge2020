@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
@@ -19,12 +21,15 @@ public class Arm extends SubsystemBase {
 //TODO add encoder/limit switch
 
   private WPI_TalonSRX armTalon;
+  private Encoder armEncoder = new Encoder(1, 3);
 
   public Arm() {
     armTalon = new WPI_TalonSRX(6);
 
     TalonSRXConfiguration allConfigs = new TalonSRXConfiguration();
     armTalon.configAllSettings(allConfigs);
+
+    resetArmEncoder();
   }
 
   public void armUp(){
@@ -36,12 +41,21 @@ public class Arm extends SubsystemBase {
   }
 
   public void armStop(){
-    armTalon.set(0.055);
+    armTalon.set(0.1);
+    //armTalon.set(0.055);
+  }
+
+  public void resetArmEncoder() {
+    armEncoder.reset();
+  }
+
+  public double getEncoderDistance() {
+    return armEncoder.getDistance();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ArmEncoder", getEncoderDistance());
   }
 }
  
