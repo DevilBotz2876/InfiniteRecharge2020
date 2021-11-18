@@ -57,5 +57,6 @@ public class WOFSpinToColor extends CommandBase {
     @Override
     public boolean isFinished() {
         return targetColor == null || currentColor.equals(targetColor);
+        // return false;
     }
 }

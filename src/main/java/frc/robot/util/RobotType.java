@@ -7,7 +7,9 @@ public class RobotType {
     public static final boolean isPracticeBot = isPracticeBot();
 
     private static boolean isPracticeBot() {
-        DigitalInput dio = new DigitalInput(9);
-        return !dio.get();
+        System.out.println("********************* isPracticeBot ******************");
+        return false;
+        // DigitalInput dio = new DigitalInput(9);
+        // return !dio.get();
     }
 }

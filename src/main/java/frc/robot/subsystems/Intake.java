@@ -36,12 +36,16 @@ public class Intake extends SubsystemBase {
   }
 
   public void ballIn(){
-    intakeTalon.set(RobotType.isPracticeBot ? -0.6 : 0.6);
+    // Temp Practice Bot Change
+    // intakeTalon.set(RobotType.isPracticeBot ? -0.6 : 0.6);
+    intakeTalon.set(0.6);
     is_on = true;
   }
 
   public void ballOut(){
-    intakeTalon.set(RobotType.isPracticeBot ? 0.6 : -0.6);
+    // Temp Practice Bot Change
+    // intakeTalon.set(RobotType.isPracticeBot ? 0.6 : -0.6);
+    intakeTalon.set(-0.6);
     is_on = true;
   }
 

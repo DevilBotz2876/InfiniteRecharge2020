@@ -13,6 +13,7 @@ public class VideoStream {
         new Thread(() -> {
             UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
+            camera.setFPS(30);
 
             CvSink cvSink = CameraServer.getInstance().getVideo();
             CvSource outputStream = CameraServer.getInstance().putVideo("Main Camera", 4096, 4096);

@@ -37,7 +37,11 @@ public final class Constants {
 
     public static final class AutoConstants {
         public static final double kWheelDiameterInches = 6;
-        public static final double DISTANCE_TO_GOAL = RobotType.isPracticeBot ? 42.5 : 83.5;
-        public static final double ROTATE_ANGLE = RobotType.isPracticeBot ? 114 : 94;
+        // Temp Practice Bot Change
+        // public static final double DISTANCE_TO_GOAL = RobotType.isPracticeBot ? 40 : 80;
+        // public static final double ROTATE_ANGLE = RobotType.isPracticeBot ? 114 : 94;
+
+        public static final double DISTANCE_TO_GOAL = 80;
+        public static final double ROTATE_ANGLE = 94;
     }
 }

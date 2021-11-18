@@ -39,13 +39,14 @@ public class WheelOfFortune extends SubsystemBase {
   //private SuppliedValueWidget<Boolean> colorWidget = Shuffleboard.getTab("WOF").addBoolean("Color", () -> true);
 
   public WheelOfFortune() {
-    m_colorSensor = RobotType.isPracticeBot ? null : new ColorSensorV3(I2C.Port.kOnboard);
+    // m_colorSensor = RobotType.isPracticeBot ? null : new ColorSensorV3(I2C.Port.kOnboard);
+    m_colorSensor = null;
 
     liftTalon = new WPI_TalonSRX(7);
     spinTalon = new WPI_TalonSRX(8);
-    for (Color color : WOFConstants.COLOR_MAP.keySet()) {
-      m_colorMatcher.addColorMatch(color);
-    }
+    // for (Color color : WOFConstants.COLOR_MAP.keySet()) {
+    //   m_colorMatcher.addColorMatch(color);
+    // }
   }
 
   public void wofUp(){
@@ -78,7 +79,7 @@ public class WheelOfFortune extends SubsystemBase {
     }
     if (m_colorSensor != null) {
       WOFColor wofColor = readColor();
-      if (wofColor != null) {
+      if (wofColor != null && wofColor.getColor() != null) {
         SmartDashboard.putString("Detected Color", wofColor.getColor());
         SmartDashboard.putNumber("Confidence", wofColor.getConfidence());
       }

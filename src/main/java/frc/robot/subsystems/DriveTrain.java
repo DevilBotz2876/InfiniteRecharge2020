@@ -47,12 +47,11 @@ public class DriveTrain extends SubsystemBase {
 
   DifferentialDrive differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
 
-  //TODO what should these be? should they be different? find out next time on
+  // TODO what should these be? should they be different? find out next time on
   private final PIDController leftPIDController = new PIDController(1, 0, 0);
   private final PIDController rightPIDController = new PIDController(1, 0, 0);
 
-  private final DifferentialDriveKinematics kinematics
-      = new DifferentialDriveKinematics(TRACK_WIDTH);
+  private final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
 
   public DriveTrain() {
     // https://phoenix-documentation.readthedocs.io/en/latest/ch13_MC.html#follower
@@ -100,14 +99,17 @@ public class DriveTrain extends SubsystemBase {
 
   /**
    * Calculates the distance traveled by the robot by reading encoder values
+   * 
    * @return the linear distance traveled by the robot in inches
    */
   public double getAverageEncoderDistance() {
-    double leftDistance = leftMaster.getSelectedSensorPosition() * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
-    double rightDistance = rightMaster.getSelectedSensorPosition() * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
+    double leftDistance = leftMaster.getSelectedSensorPosition()
+        * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
+    double rightDistance = rightMaster.getSelectedSensorPosition()
+        * (Constants.AutoConstants.kWheelDiameterInches * Math.PI / 4096);
     return ((Math.abs(leftDistance) + Math.abs(rightDistance)) / 2);
   }
-  
+
   public void tankDrive(double leftValue, double rightValue) {
     differentialDrive.tankDrive(leftValue, rightValue);
   }
@@ -122,6 +124,7 @@ public class DriveTrain extends SubsystemBase {
     leftFollower.setNeutralMode(mode);
     rightFollower.setNeutralMode(mode);
   }
+
   /**
    * Returns the angle of the robot as a Rotation2d.
    *

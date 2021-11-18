@@ -33,7 +33,9 @@ public class DriveRotate extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_drive.arcadeDrive(0, RobotType.isPracticeBot ? rotationSpeed : -rotationSpeed);
+        // Temp Practice Bot Change
+        // m_drive.arcadeDrive(0, RobotType.isPracticeBot ? rotationSpeed : -rotationSpeed);
+        m_drive.arcadeDrive(0, -rotationSpeed);
     }
 
     @Override
@@ -44,5 +46,6 @@ public class DriveRotate extends CommandBase {
     @Override
     public boolean isFinished() {
         return m_drive.getAngle().getDegrees() >= initialRotation + degrees;
+        // return false;
     }
 }
