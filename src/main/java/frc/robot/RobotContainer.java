@@ -64,6 +64,8 @@ public class RobotContainer {
     intake.setDefaultCommand(new BallStop(intake));
     arm.setDefaultCommand(new ArmStop(arm));
 
+    System.out.print("***************** Version 2021 *****************");
+
     SmartDashboard.putData(intake);
     SmartDashboard.putData(arm);
     SmartDashboard.putData(drive);

@@ -39,5 +39,6 @@ public class DriveTimed extends CommandBase {
     @Override
     public boolean isFinished() {
         return (System.currentTimeMillis() - startTime) / 1000.0 >= desiredTime;
+        // return false;
     }
 }

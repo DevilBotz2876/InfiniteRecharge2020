@@ -50,8 +50,12 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // double f = m_forward.getAsDouble();
     // double r = m_rotation.getAsDouble();
-    double f = filterForward.calculate(m_forward.getAsDouble());
-    double r = filterRotation.calculate(m_rotation.getAsDouble());
+
+    // Added division to slow control speed
+    // Slowing 10%
+    double f = filterForward.calculate(m_forward.getAsDouble() / 1.05);
+    // Slowing 20%
+    double r = filterRotation.calculate(m_rotation.getAsDouble() / 1.15);
     
     // y=a(x^3)+(1-a)x
     double a = .4;

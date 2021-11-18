@@ -56,5 +56,6 @@ public class WOFSpinForSameColor extends CommandBase {
     @Override
     public boolean isFinished() {
         return currentTimes == times;
+        // return false;
     }
 }
